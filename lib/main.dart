@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:noonpool_web/constants/strings.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
+import 'package:noonpool_web/pages/home/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       colorScheme: ColorScheme.fromSwatch().copyWith(
         primary: kPrimaryColor,
       ),
-      canvasColor: Colors.white,
+      canvasColor: kBackgroundColor,
       fontFamily: manrope,
       iconTheme: ThemeData.light().iconTheme.copyWith(color: kTextColor),
       textTheme: ThemeData.light().textTheme.copyWith(
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
       title: appName,
       theme: lightTheme,
       scaffoldMessengerKey: scaffoldMessengerKey,
-      home: Container(),
+      home: const HomeTab(),
     );
   }
 }
