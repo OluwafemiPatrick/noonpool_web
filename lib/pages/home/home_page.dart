@@ -6,7 +6,6 @@ import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/main.dart';
 import 'package:noonpool_web/models/coin_model/coin_model.dart';
-import 'package:noonpool_web/pages/calculator/calculator_page.dart';
 import 'package:noonpool_web/pages/home/widget/home_coin_item.dart';
 import 'package:noonpool_web/pages/home/widget/home_header_item.dart';
 import 'package:noonpool_web/pages/wallet/wallet_page.dart';
