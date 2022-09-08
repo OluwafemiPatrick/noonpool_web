@@ -1,0 +1,185 @@
+ {
+   "@@locale": "fa",
+       "systemDefault": "پیش فرض سیستم",
+    "english":"انگلیسی",
+    "persian":"فارسی",
+    "chinease":"چینی ها",
+    "arabic":"عربی",
+    "russia":"روسی",
+    "turkish": "ترکی",
+   "helloWorld":"سلام دنیا!",
+"signIn":"ورود",
+"createAccount":"ایجاد حساب کاربری",
+"viewMiningProfits":"سود استخراج را در یک نگاه مشاهده کنید",
+"builtInCryptoCurrencyWallet":"کیف پول رمزنگاری شده برای مدیریت دارایی ها ساخته شده است",
+"stableAndSecureMiningNetwork":"شبکه استخراج 24/7 پایدار و ایمن",
+"signUp":"ثبت نام",
+"dontHaveAnAccount":"حساب کاربری ندارید؟",
+"forgotYourPassword":"رمز عبور خود را فراموش کرده اید؟",
+"passwordMustBeMoreThan8Letters":"رمز عبور باید بیش از 8 حرف باشد",
+"pleaseProvideYourPassword":"لطفا رمز عبور خود را وارد کنید",
+"enterYourPassword":"رمز عبور خود را وارد کنید.",
+"password":"کلمه عبور",
+"pleaseProvideAValidEmail":"لطفا یک ایمیل معتبر وارد کنید",
+"pleaseProvideYourEmail":"لطفا ایمیل خود را ارائه دهید.",
+"pleaseEnterYourEmailAddress":"لطفا آدرس ایمیل خود را وارد کنید",
+"email":"پست الکترونیک",
+"aNewOtpHasBeenSentToMail":"یک OTP جدید به ایمیل شما ارسال شده است.",
+"resendingVerificationPleaseWait":"در حال ارسال مجدد تأیید، لطفاً صبر کنید",
+"resendVerificatoinLink":"ارسال مجدد پیوند تأیید",
+"emailNotVerifiedClickToVerify":"ایمیل تأیید نشده است، لطفاً برای تأیید حساب خود روی دکمه زیر کلیک کنید",
+"anErrorOccurredWhileLogginIn":"هنگام ورود به حساب کاربری شما خطایی رخ داد",
+"forgotPassword":"رمز عبور را فراموش کرده اید",
+"pleaseEnterThePinYouRecieved":"لطفا پینی که دریافت کردید را وارد کنید",
+"pleaseEnterTheCompletePin":"لطفا پین را کامل وارد کنید",
+"pleaseEnterTheOtpThatWasSentToYourAccount":"لطفاً OTP را که به حساب شما ارسال شده است وارد کنید.",
+"verifyOtp":"OTP را تأیید کنید",
+"yourAccountHasBeenVerifiedPleaseProceedToLogin":"حساب شما تایید شده است، لطفا وارد شوید.",
+"resendOtp":"ارسال مجدد OTP",
+"resendingVerificationPleaseWait":"در حال ارسال مجدد تأیید، لطفاً صبر کنید",
+"aNewOtpHasBeenSentToYourAccount":"یک OTP جدید به حساب شما ارسال شده است",
+"forgotPassword":"رمز عبور را فراموش کرده اید",
+"emailVerification":"تایید ایمیل",
+"kindlyEnterYourEmailAndWellSendHelpYouRecoverYourPassword":"لطفا ایمیل خود را وارد کنید و ما به شما کمک خواهیم کرد تا رمز عبور خود را بازیابی کنید",
+"submit":"ارسال",
+"aVerificationOtpHasBeenSentToYourMail":"یک OTP تأیید به ایمیل شما ارسال شده است",
+"pleaseEnterThePinYouRecieved":"لطفا پینی که دریافت کردید را وارد کنید",
+"pleaseEnterTheCompletePin":"لطفا پین را کامل وارد کنید",
+"otpVerification":"تأیید OTP",
+"enterTheOtpThatWasSentToYourAccount":"OTP را که به حساب شما ارسال شده است وارد کنید.",
+"verify":"تأیید کنید",
+"passwordsAreNotTheSame":"رمزهای عبور یکسان نیستند",
+"retypePassword":"رمز عبور را دوباره تایپ کنید",
+"retypeYourPassword":"رمز عبور خود را دوباره تایپ کنید.",
+"pleaseConfirmYourPassword":"لطفا رمز عبور خود را تایید کنید",
+"passwordChange":"تغییر رمز عبور",
+"enterANewPasswordForYourAccount":"یک رمز عبور جدید برای حساب خود وارد کنید",
+"resetPassword":"'بازنشانی رمز عبور",
+"yourPasswordHasBeenSuccessfullyResetPleaseLoginNow":"رمز عبور شما با موفقیت بازنشانی شد. لطفا همین الان وارد شوید",
+"loginToAccount":"وارد حساب کاربری شوید",
+"announcement":"اعلامیه",
+"usernameUnavailiable":"نام کاربری در دسترس نیست",
+"hasAlreadyBeenRegisteredKindlyChooseADifferentUsername":"قبلا ثبت شده است، لطفا یک نام کاربری دیگر انتخاب کنید",
+"pleaseEnterAUniqueUsernameThisUsernameWillBeAssociatedWithYourAccountAndWillBeUsedInTheApplication":"لطفا یک نام کاربری منحصر به فرد وارد کنید. این نام کاربری با حساب شما مرتبط می شود و در برنامه استفاده می شود",
+"okay":"باشه",
+"username":"نام کاربری",
+"pleaseEnterYourUsername":"لطفا نام کاربری خود را وارد کنید",
+"usernameLengthMustBeGreaterThan8":"طول نام کاربری باید بیشتر از 8 باشد.",
+"usernameCannotContainSpacesOrSpecialCharacters":"نام کاربری نمی تواند شامل فاصله یا کاراکترهای خاص باشد",
+"statistics":"آمار",
+"anErrorOccurredWithTheDataFetchPleaseTryAgain":"هنگام واکشی داده ها خطایی روی داد، لطفاً دوباره امتحان کنید",
+"coin":"سکه",
+"algorithm":"الگوریتم",
+"price":"قیمت",
+"miningProfit":"سود معدن",
+"difficulty":"دشواری",
+"networkHashrate":"هش ریت شبکه",
+"home":"صفحه اصلی",
+"pool":"استخر",
+"wallet":"کیف پول",
+"settings":"تنظیمات",
+"pleaseConnectToAnInternetConnectionToLoadData":"لطفاً برای بارگیری داده ها به یک اتصال اینترنتی متصل شوید",
+"signOut":"خروج از سیستم",
+"doYouWishToSignOutOfThisDevice":"آیا می خواهید از سیستم این دستگاه خارج شوید؟",
+"cancel":"لغو کنید",
+"language":"زبان",
+"helpCenter":"مرکز کمک",
+"aboutNoonpool":"درباره NoonPool",
+"changePassword":"رمز عبور را تغییر دهید",
+"calculator":"ماشین حساب",
+"doYouWantALinkToChangeYourPasswordForYourCurrentAccount":"آیا پیوندی برای تغییر رمز عبور حساب فعلی خود می خواهید؟",
+"yes":"آره",
+"anEmailWithALinkToChangeYourPasswordHasBeenSentToYourAccount":"یک ایمیل با لینک تغییر رمز عبور به حساب شما ارسال شده است.",
+"announcement":"اعلامیه",
+"verifyYourMail":"ایمیل خود را تأیید کنید",
+"weHaveSentAOtpToYourMailKindlyClickOnProceedWhenYouRecieveIt":"ما یک OTP به ایمیل شما ارسال کرده ایم. لطفاً پس از دریافت آن، روی ادامه کلیک کنید.",
+"verifyOtp":"OTP را تأیید کنید",
+"resendOtp":"ارسال مجدد OTP",
+"resendingVerificationPleaseWait":"در حال ارسال مجدد تأیید، لطفاً صبر کنید",
+"anErrorOccurredPleaseRefreshThePage":"خطایی رخ داده است، لطفاً صفحه را بازخوانی کنید",
+"calculate":"محاسبه",
+"theResultIsTheTheoreticalPpsMiningYieldBasedOnTheSetDifficultyAndTheAverageMinerFeesInThePast7Days":"نتیجه، بازده استخراج نظری PPS+ بر اساس سختی مجموعه و میانگین هزینه‌های ماینر در 7 روز گذشته است.",
+"ppsFeeRate":"نرخ کارمزد PPS",
+"difficulty":"دشواری",
+"numberOfMiners":"تعداد ماینرها",
+"validHashrate":"هش ریت معتبر",
+"estDailyYield":"EST. بازده روزانه",
+"profitCalculator":"ماشین حساب سود",
+"general":"عمومی",
+"midEast":"شرق میانه",
+"pool":"استخر",
+"coinNotAvailable":"سکه موجود نیست",
+"miningAddress":"آدرس معدن",
+"addressCopiedToClipboard":"آدرس در کلیپ بورد کپی شد",
+"smartMintingUrl":"آدرس اینترنتی ضرب هوشمند",
+"allMiners":"همه ماینرها",
+"paidEarnings":"درآمد پرداخت شده",
+"activeMiners":"ماینرهای فعال",
+"workerid":"شناسه کارگر",
+"hashrate":"hashrate",
+"validShares":"سهام معتبر",
+"stat":"آمار",
+"noWorkerData":"داده های کارگری وجود ندارد",
+"aNewOtpHasBeenSentToYourAccount":"یک OTP جدید به حساب شما ارسال شده است",
+
+"miningProfit":"سود معدن",
+"hashrateTrend":"هاشرت ترند",
+"cummulativeEarnings":"درآمد انباشته",
+"estEarning":"برآورد درآمد",  
+"h10Min":"10 دقیقه",
+"h1Hour":"1 ساعت",
+"h1Day":"1 روز",
+"statistics":"آمار",
+"twoFactorAuthentication":"احراز هویت دو مرحله ای",
+"authTurnedOff":"احراز هویت دو مرحله ای شما خاموش شده است.",
+"enableAuthentication":"احراز هویت را فعال کنید",
+"pleaseDownloadTheApplicationGoogleAuthenticatorOnYourMobileDeviceAndScanTheCode":"1. لطفاً برنامه Google Authenticator را در دستگاه تلفن همراه خود دانلود کنید و کد زیر را اسکن کنید.",
+"pleaseEnterTheGeneratedCodeBelowANewCodeWillBeGeneratedAutomaticallyEvery30Seconds":"2. لطفا کد تولید شده را در زیر وارد کنید. هر 30 ثانیه یک کد جدید به صورت خودکار تولید می شود و برای ایمن کردن تراکنش های ورود و کیف پول شما مانند برداشت استفاده می شود.",
+"enable2fa":"2FA را فعال کنید",
+"enabledSuccessfully":"با موفقیت فعال شد",
+"theCodeEnteredDoesNotMatch":"کد وارد شده مطابقت ندارد.",
+"verifyCode":"کد را تأیید کنید",
+"toProceedPleaseEnterTheCodeFromTheGoogleAuthenticatorApplication":"برای ادامه، لطفاً کد را از برنامه Google Authenticator وارد کنید.",
+"verify":"تأیید کنید",
+"theCodeEnteredDoesNotMatch":"کد وارد شده مطابقت ندارد.",
+"wallet":"کیف پول",
+"estAmount":"EST. میزان",
+"receive":"دريافت كردن",
+"send":"ارسال",
+"isCurrentlyUnavailaleWeWouldNotifyYouOnceItIsAvailiable":"در حال حاضر در دسترس نیست، پس از در دسترس بودن به شما اطلاع خواهیم داد",
+"frozen":"منجمد",
+"noData":"اطلاعاتی وجود ندارد!",
+"noDataFoundPleaseCheckBackLaterForYourTransactionHistory":"هیچ داده ای یافت نشد، لطفاً بعداً برای سابقه تراکنش خود دوباره بررسی کنید",
+"hash":"هش",
+"youShouldOnlySend":"فقط باید بفرستید",
+"toThisAddressSendingAnyOtherCoinsMayResultInPermanentLoss":"به این آدرس ارسال هر سکه دیگری ممکن است منجر به از دست دادن دائمی شود.",
+"copy":"کپی 🀄",
+"walletAddressHasBeenCopiedToYourClipboard":"آدرس کیف پول در کلیپ بورد شما کپی شده است",
+"share":"اشتراک گذاری",
+"shareWalletAddress":"آدرس کیف پول را به اشتراک بگذارید",
+"noAssetFoundKindlyEnterANewSearchQuery":"هیچ دارایی یافت نشد، لطفاً یک عبارت جستجوی جدید وارد کنید",
+"noDataFoundPleaseCheckBackLater":"داده ای یافت نشد، لطفاً بعداً دوباره بررسی کنید",
+"search":"جستجو کردن",
+"yourTransactionWasSentSuccessfully":"تراکنش شما با موفقیت ارسال شد.",
+"transactionConfirmation":"تایید معامله",
+"doYouWantToTransferThisAmountToTheSelectedAddress":"آیا می خواهید این مبلغ را به آدرس انتخاب شده انتقال دهید؟",
+"confirm":"تایید",
+"transactionStatus":"وضعیت تراکنش",
+"asset":"دارایی",
+"to":"به",
+"maxTotal":"حداکثر مجموع",
+"continueH":"ادامه هید",
+"amount":"میزان",
+"max":"حداکثر",
+"pleaseProvideTheAmount":"لطفا مبلغ رو بفرمایید",
+"pleaseEnterAValidAmount":"لطفا یک مقدار معتبر وارد کنید",
+"youCanNotSendMoreThanYouPresentlyHave":"شما نمی توانید بیش از آنچه در حال حاضر دارید ارسال کنید.",
+"recipientAdddress":"آدرس گیرنده",
+"pleaseProvideTheRecipientAddress":"لطفا آدرس گیرنده را بفرمایید",
+"permissionsNotGranted":"مجوزها داده نشده است",
+
+"updateSuccessful":"بروز رسانی موفق",
+"requestProcessing":"پردازش درخواست",
+"pleaseBePatientWhileWeProcessYourRequest":"لطفا در مدت زمانی که ما درخواست شما را بررسی می کنیم صبور باشید."
+ 
+}

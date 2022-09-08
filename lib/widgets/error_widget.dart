@@ -17,7 +17,9 @@ class CustomErrorWidget extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final bodyText1 = textTheme.bodyText1!;
     final bodyText2 = textTheme.bodyText2!;
-    return Padding(
+    return Container(
+      height: 500,
+      alignment: Alignment.center,
       padding: const EdgeInsets.all(kDefaultPadding / 2),
       child: Column(
           mainAxisSize: MainAxisSize.min,

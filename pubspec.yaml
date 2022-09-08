@@ -29,14 +29,16 @@ environment:
 dependencies:
   cached_network_image: ^3.1.0+1
   cupertino_icons: ^1.0.2
+  flutter_localizations:
+    sdk: flutter
   flutter:
     sdk: flutter
   flutter_svg: ^1.0.3
   get: ^4.6.5
   http: ^0.13.4
+  localization: ^2.1.0 
   intl: ^0.17.0
-  lottie: ^1.4.2
-  pull_to_refresh: ^2.0.0
+  lottie: ^1.4.2 
   shared_preferences: ^2.0.12
   shimmer: ^2.0.0
 
@@ -61,7 +63,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  generate: true
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/

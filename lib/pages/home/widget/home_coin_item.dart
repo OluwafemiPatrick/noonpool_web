@@ -21,12 +21,7 @@ class HomeCoinItem extends StatelessWidget {
     final lightText = bodyText2.copyWith(color: kLightText);
     const spacer = SizedBox(width: kDefaultMargin / 2);
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      padding: const EdgeInsets.all(kDefaultPadding / 2),
-      margin: const EdgeInsets.only(bottom: kDefaultMargin),
+      margin: const EdgeInsets.all(kDefaultPadding / 2),
       child: shimmerEnabled
           ? Shimmer.fromColors(
               baseColor: Colors.grey.shade100,
