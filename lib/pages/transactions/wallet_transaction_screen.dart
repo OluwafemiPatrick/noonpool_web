@@ -10,16 +10,16 @@ import 'package:noonpool_web/widgets/outlined_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class WalletTransactionsTab extends StatefulWidget {
+class WalletTransactionsPage extends StatefulWidget {
   final WalletDatum walletDatum;
-  const WalletTransactionsTab({Key? key, required this.walletDatum})
+  const WalletTransactionsPage({Key? key, required this.walletDatum})
       : super(key: key);
 
   @override
-  State<WalletTransactionsTab> createState() => _WalletTransactionsTabState();
+  State<WalletTransactionsPage> createState() => _WalletTransactionsPageState();
 }
 
-class _WalletTransactionsTabState extends State<WalletTransactionsTab> {
+class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
   bool _isLoading = true;
   bool _hasError = false;
   bool _isOldDataLoading = false;
@@ -153,39 +153,42 @@ class _WalletTransactionsTabState extends State<WalletTransactionsTab> {
     final bodyText1 = textTheme.bodyText1!;
     final bodyText2 = textTheme.bodyText2!;
     final topPadding = MediaQuery.of(context).padding.top;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        buildAppBar(topPadding, bodyText1),
-        buildHeader(bodyText2, bodyText1),
-        const SizedBox(
-          height: 5,
-        ),
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-            ),
-            child: _isLoading
-                ? buildLoadingBody()
-                : _hasError
-                    ? CustomErrorWidget(
-                        error: AppLocalizations.of(context)!
-                            .anErrorOccurredWithTheDataFetchPleaseTryAgain,
-                        onRefresh: () {
-                          getData();
-                        })
-                    : buildBody(),
+    return Container(
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildAppBar(topPadding, bodyText1),
+          buildHeader(bodyText2, bodyText1),
+          const SizedBox(
+            height: 5,
           ),
-        ),
-        /*       Expanded(
-            child: CryptoTransaction(
-              assetDatum: widget.walletDatum,
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              child: _isLoading
+                  ? buildLoadingBody()
+                  : _hasError
+                      ? CustomErrorWidget(
+                          error: AppLocalizations.of(context)!
+                              .anErrorOccurredWithTheDataFetchPleaseTryAgain,
+                          onRefresh: () {
+                            getData();
+                          })
+                      : buildBody(),
             ),
-          ), */
-      ],
+          ),
+          /*       Expanded(
+              child: CryptoTransaction(
+                assetDatum: widget.walletDatum,
+              ),
+            ), */
+        ],
+      ),
     );
   }
 

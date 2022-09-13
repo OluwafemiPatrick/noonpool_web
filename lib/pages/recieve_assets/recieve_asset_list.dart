@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:focus_detector/focus_detector.dart';
 import 'package:noonpool_web/constants/style.dart';
@@ -5,6 +6,7 @@ import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/main.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
 import 'package:noonpool_web/models/wallet_data/wallet_data.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/error_widget.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -79,60 +81,62 @@ class _RecieveAssetListState extends State<RecieveAssetList> {
       onFocusGained: () {
         fetchUserAssets();
       },
-      child: _isLoading
-          ? buildProgressBar()
-          : _hasError
-              ? CustomErrorWidget(
-                  error: AppLocalizations.of(context)!
-                      .anErrorOccurredWithTheDataFetchPleaseTryAgain,
-                  onRefresh: () {
-                    fetchUserAssets();
-                  })
-              : Column(
-                  children: [
-                    AppBar(
-                      elevation: 0,
-                      backgroundColor: Colors.transparent,
-                      title: Text(
-                        AppLocalizations.of(context)!.receive,
-                        style: bodyText1?.copyWith(fontWeight: FontWeight.bold),
+      child: Container(
+        color: Colors.white,
+        child: _isLoading
+            ? buildProgressBar()
+            : _hasError
+                ? CustomErrorWidget(
+                    error: AppLocalizations.of(context)!
+                        .anErrorOccurredWithTheDataFetchPleaseTryAgain,
+                    onRefresh: () {
+                      fetchUserAssets();
+                    })
+                : Column(
+                    children: [
+                      AppBar(
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
+                        title: Text(
+                          AppLocalizations.of(context)!.receive,
+                          style: bodyText1?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        leading: null,
+                        automaticallyImplyLeading: false,
                       ),
-                      leading: null,
-                      automaticallyImplyLeading: false,
-                    ),
-                    if (coinDatas.isNotEmpty || _isSearch) buildSearchBar(),
-                    coinDatas.isEmpty
-                        ? buildEmptyItem()
-                        : ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.all(0),
-                            itemBuilder: (ctx, index) => SendAssetListItem(
-                              walletDatum: coinDatas[index],
-                              onPressed: (model) {
-                                final acceptedCoins = [
-                                  'btc',
-                                  'ltc',
-                                  'doge',
-                                  'bch'
-                                ];
-                                if (acceptedCoins.contains(
-                                    model.coinSymbol?.toLowerCase())) {
-                                  /*     Navigator.of(context).push(CustomPageRoute(
-                                    screen: ReceiveAssets(walletDatum: model),
-                                  )); */
-                                } else {
-                                  MyApp.scaffoldMessengerKey.currentState
-                                      ?.showSnackBar(SnackBar(
-                                          content: Text(
-                                              "${model.coinName} ${AppLocalizations.of(context)!.isCurrentlyUnavailaleWeWouldNotifyYouOnceItIsAvailiable}")));
-                                }
-                              },
+                      if (coinDatas.isNotEmpty || _isSearch) buildSearchBar(),
+                      coinDatas.isEmpty
+                          ? buildEmptyItem()
+                          : ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(0),
+                              itemBuilder: (ctx, index) => SendAssetListItem(
+                                walletDatum: coinDatas[index],
+                                onPressed: (model) {
+                                  final acceptedCoins = [
+                                    'btc',
+                                    'ltc',
+                                    'doge',
+                                    'bch'
+                                  ];
+                                  if (acceptedCoins.contains(
+                                      model.coinSymbol?.toLowerCase())) {
+                                    context.router
+                                        .push(ReceiveAssets(walletDatum: model));
+                                  } else {
+                                    MyApp.scaffoldMessengerKey.currentState
+                                        ?.showSnackBar(SnackBar(
+                                            content: Text(
+                                                "${model.coinName} ${AppLocalizations.of(context)!.isCurrentlyUnavailaleWeWouldNotifyYouOnceItIsAvailiable}")));
+                                  }
+                                },
+                              ),
+                              itemCount: coinDatas.length,
                             ),
-                            itemCount: coinDatas.length,
-                          ),
-                  ],
-                ),
+                    ],
+                  ),
+      ),
     );
   }
 

@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/responsiveness.dart';
-import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/pages/home/widget/home_footer_1.dart';
 import 'package:noonpool_web/pages/home/widget/home_page_header.dart';
+import 'package:noonpool_web/widgets/app_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,9 +16,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final bodyText1 = textTheme.bodyText1!;
-
     const spacer = SizedBox(
       height: kDefaultMargin,
     );
@@ -26,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Column(
         children: [
-          buildAppBar(bodyText1),
+          const CustomAppBar(),
           const Divider(),
           const SizedBox(
             width: double.infinity,
@@ -48,6 +45,7 @@ class _HomePageState extends State<HomePage> {
                       const HomeHeader(),
                       spacer,
                       Container(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
                         height: MediaQuery.of(context).size.height,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -74,60 +72,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  Widget buildAppBar(TextStyle? bodyText1) {
-    return Row(
-      children: [
-        /*  Text(
-          AppPreferences.userName,
-          style: bodyText1!.copyWith(fontWeight: FontWeight.bold),
-        ), */
-        Image.asset(
-          'assets/images/logo2.png',
-          width: 60,
-        ),
-        _button2('Home', bodyText1, () {}, isSelected: true),
-        _button2(
-          'Calculator',
-          bodyText1,
-          () {},
-        ),
-        _button2('Wallet', bodyText1, () {}),
-        _button(Icons.person_rounded, () {})
-      ],
-    );
-  }
-
-  Widget _button2(
-    String text,
-    TextStyle? bodyText2,
-    VoidCallback onPressed, {
-    bool isSelected = false,
-  }) =>
-      TextButton(
-          onPressed: onPressed,
-          child: Row(
-            children: [
-              Text(
-                text,
-                style: bodyText2?.copyWith(
-                  color: isSelected ? Colors.red : bodyText2.color,
-                ),
-              ),
-            ],
-          ));
-
-  Widget _button(
-    IconData iconData,
-    VoidCallback onPressed, {
-    bool isSelected = false,
-  }) =>
-      IconButton(
-        onPressed: onPressed,
-        icon: Icon(
-          iconData,
-          size: 16,
-          color: isSelected ? Colors.red : Colors.black,
-        ),
-      );
 }

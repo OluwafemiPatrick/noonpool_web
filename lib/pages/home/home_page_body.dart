@@ -26,25 +26,27 @@ class _HomeBodyState extends State<HomeBody> {
     final bodyText2 = textTheme.bodyText2!;
     final lightText = bodyText2.copyWith(color: kLightText);
 
-    return Column(
-      children: [
-        buildRow2(bodyText1, lightText),
-        Expanded(
-          child: _isLoading
-              ? buildLoadingBody()
-              : _hasError
-                  ? SizedBox(
-                      height: 500,
-                      child: CustomErrorWidget(
-                          error:
-                              "An error occurred with the data fetch, please try again",
-                          onRefresh: () {
-                            getData();
-                          }),
-                    )
-                  : buildBody(),
-        ),
-      ],
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          buildRow2(bodyText1, lightText),
+          Expanded(
+            child: _isLoading
+                ? buildLoadingBody()
+                : _hasError
+                    ? Center(
+                        child: CustomErrorWidget(
+                            error:
+                                "An error occurred with the data fetch, please try again",
+                            onRefresh: () {
+                              getData();
+                            }),
+                      )
+                    : buildBody(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -136,7 +138,7 @@ class _HomeBodyState extends State<HomeBody> {
     } catch (exception) {
       MyApp.scaffoldMessengerKey.currentState
           ?.showSnackBar(SnackBar(content: Text(exception.toString())));
-      _hasError = false;
+      _hasError = true;
     }
     setState(() {
       _isLoading = false;
