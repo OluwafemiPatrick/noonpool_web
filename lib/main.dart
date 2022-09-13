@@ -5,19 +5,20 @@ import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/controller/locale_controller.dart';
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:noonpool_web/pages/home/home_page.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppPreferences.init();
   Get.put(LocaleController(), permanent: true);
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final _appRouter = AppRouter();
   static GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
 
     return GetX<LocaleController>(builder: (controller) {
       final locale = controller.locale.value;
-      return GetMaterialApp(
+      return GetMaterialApp.router(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         locale: locale,
@@ -52,7 +53,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
         scaffoldMessengerKey: scaffoldMessengerKey,
-        home: const HomeTab(),
+        routerDelegate: _appRouter.delegate(),
+        routeInformationParser: _appRouter.defaultRouteParser(),
       );
     });
   }

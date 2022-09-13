@@ -12,12 +12,12 @@ import 'package:otp/otp.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class VerifyOtp extends StatefulWidget {
+class VerifyOtpPage extends StatefulWidget {
   final Function(String) onNext;
   final String id;
   final bool backEnaled;
 
-  const VerifyOtp({
+  const VerifyOtpPage({
     Key? key,
     required this.onNext,
     this.backEnaled = true,
@@ -25,10 +25,10 @@ class VerifyOtp extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<VerifyOtp> createState() => _VerifyOtpState();
+  State<VerifyOtpPage> createState() => _VerifyOtpPageState();
 }
 
-class _VerifyOtpState extends State<VerifyOtp> {
+class _VerifyOtpPageState extends State<VerifyOtpPage> {
   bool _isLoading = true;
   bool _hasError = false;
   UserSecret _userSecret = UserSecret();

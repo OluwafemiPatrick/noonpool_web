@@ -15,7 +15,7 @@ class HomeHeaderItem extends StatelessWidget {
     final bodyText2 = textTheme.bodyText1!.copyWith(
       color: Colors.black,
       fontSize: 16,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
     );
     return Expanded(
       child: Container(

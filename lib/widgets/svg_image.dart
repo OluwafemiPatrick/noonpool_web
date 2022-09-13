@@ -17,8 +17,6 @@ class SvgImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-
     return SvgPicture.asset(iconLocation,
         semanticsLabel: name, height: size, width: size, color: color);
   }

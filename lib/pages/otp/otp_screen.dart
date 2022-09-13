@@ -12,16 +12,16 @@ import 'package:pinput/pinput.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class OtpScreen extends StatefulWidget {
-  const OtpScreen({
+class OtpPage extends StatefulWidget {
+  const OtpPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<OtpScreen> createState() => _OtpScreenState();
+  State<OtpPage> createState() => _OtpPageState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _OtpPageState extends State<OtpPage> {
   String secretKey = '';
   bool _isLoading = false;
   final otpFieldController = TextEditingController(text: "");

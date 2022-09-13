@@ -10,17 +10,16 @@ import 'package:noonpool_web/widgets/outlined_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class WalletTransactionsScreen extends StatefulWidget {
+class WalletTransactionsTab extends StatefulWidget {
   final WalletDatum walletDatum;
-  const WalletTransactionsScreen({Key? key, required this.walletDatum})
+  const WalletTransactionsTab({Key? key, required this.walletDatum})
       : super(key: key);
 
   @override
-  State<WalletTransactionsScreen> createState() =>
-      _WalletTransactionsScreenState();
+  State<WalletTransactionsTab> createState() => _WalletTransactionsTabState();
 }
 
-class _WalletTransactionsScreenState extends State<WalletTransactionsScreen> {
+class _WalletTransactionsTabState extends State<WalletTransactionsTab> {
   bool _isLoading = true;
   bool _hasError = false;
   bool _isOldDataLoading = false;
