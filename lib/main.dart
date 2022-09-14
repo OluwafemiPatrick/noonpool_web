@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:noonpool_web/constants/strings.dart';
 import 'package:noonpool_web/constants/style.dart';
+import 'package:noonpool_web/controller/app_bar_controller.dart';
 import 'package:noonpool_web/controller/locale_controller.dart';
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,6 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppPreferences.init();
   Get.put(LocaleController(), permanent: true);
+  Get.put(AppBarController(), permanent: true);
   runApp(MyApp());
 }
 

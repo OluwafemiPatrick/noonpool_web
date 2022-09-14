@@ -1,8 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
+
 import 'package:noonpool_web/widgets/elevated_button.dart';
 import 'receipt_detail_tab.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,7 +32,6 @@ class _SendAssetState extends State<SendAsset> {
     if (_isLoading) {
       return;
     }
-
     final action = await confirmTransaction();
     if (action != null && action) {
       if (AppPreferences.get2faSecurityEnabled) {
@@ -148,7 +149,7 @@ class _SendAssetState extends State<SendAsset> {
           backgroundColor: Colors.transparent,
           title: Text(
             '${AppLocalizations.of(context)!.send} ${widget.assetDatum.coinSymbol}',
-            style: bodyText1?.copyWith(fontWeight: FontWeight.bold),
+            style: bodyText1.copyWith(fontWeight: FontWeight.bold),
           ),
           leading: null,
           automaticallyImplyLeading: false,

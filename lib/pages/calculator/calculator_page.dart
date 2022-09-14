@@ -16,70 +16,73 @@ class CalculatorPage extends StatefulWidget {
 class _CalculatorPageState extends State<CalculatorPage> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<CoinModel>>(
-      future: getAllCoinDetails(),
-      builder: (ctx, asyncDataSnapshot) {
-        if (asyncDataSnapshot.hasError) {
-          // show error
-          final error = asyncDataSnapshot.error.toString();
-          return CustomErrorWidget(
-              error: error,
-              onRefresh: () {
-                setState(() {});
-              });
-        } else {
-          if (asyncDataSnapshot.hasData) {
-            List<CoinModel> allData = asyncDataSnapshot.data ?? [];
-            if (allData.isNotEmpty) {
-              List<String> coinList = [
-                'LTC',
-                'BTC',
-                'DOGE',
-                'BCH',
-              ];
-              final selectedCoinData = <CoinModel>[];
-              for (final element in allData) {
-                if (coinList
-                    .contains(element.coinSymbol?.toUpperCase() ?? '')) {
-                  selectedCoinData.add(element);
+    return Container(
+      color: Colors.white,
+      child: FutureBuilder<List<CoinModel>>(
+        future: getAllCoinDetails(),
+        builder: (ctx, asyncDataSnapshot) {
+          if (asyncDataSnapshot.hasError) {
+            // show error
+            final error = asyncDataSnapshot.error.toString();
+            return CustomErrorWidget(
+                error: error,
+                onRefresh: () {
+                  setState(() {});
+                });
+          } else {
+            if (asyncDataSnapshot.hasData) {
+              List<CoinModel> allData = asyncDataSnapshot.data ?? [];
+              if (allData.isNotEmpty) {
+                List<String> coinList = [
+                  'LTC',
+                  'BTC',
+                  'DOGE',
+                  'BCH',
+                ];
+                final selectedCoinData = <CoinModel>[];
+                for (final element in allData) {
+                  if (coinList
+                      .contains(element.coinSymbol?.toUpperCase() ?? '')) {
+                    selectedCoinData.add(element);
+                  }
                 }
-              }
-              if (selectedCoinData.isEmpty) {
+                if (selectedCoinData.isEmpty) {
+                  return CustomErrorWidget(
+                      error: "An error occurred please refresh the page",
+                      onRefresh: () {
+                        setState(() {});
+                      });
+                }
+
+                return _CalculatorTabBody(
+                  selectedCoins: selectedCoinData,
+                );
+              } else {
                 return CustomErrorWidget(
                     error: "An error occurred please refresh the page",
                     onRefresh: () {
                       setState(() {});
                     });
               }
-
-              return _CalculatorTabBody(
-                selectedCoins: selectedCoinData,
-              );
             } else {
-              return CustomErrorWidget(
-                  error: "An error occurred please refresh the page",
-                  onRefresh: () {
-                    setState(() {});
-                  });
+              //  loading progress bar
+              return Container(
+                alignment: Alignment.center,
+                height: 800,
+                child: Lottie.asset(
+                  'assets/lottie/loading.json',
+                  width: 100,
+                  animate: true,
+                  reverse: true,
+                  repeat: true,
+                  height: 100,
+                  fit: BoxFit.contain,
+                ),
+              );
             }
-          } else {
-            //  loading progress bar
-            return Container(
-              alignment: Alignment.center,
-              height: 800,
-              child: Lottie.asset(
-                'assets/lottie/loading.json',
-                width: 100,
-                animate: true,
-                reverse: true,
-                repeat: true,
-                height: 100,
-                fit: BoxFit.contain,
-              ),
-            );
           }
-        }
-      },
+        },
+      ),
     );
   }
 }

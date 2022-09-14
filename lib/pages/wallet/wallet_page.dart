@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
@@ -5,6 +6,7 @@ import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/main.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
 import 'package:noonpool_web/models/wallet_data/wallet_data.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/error_widget.dart';
 import 'package:noonpool_web/widgets/outlined_button.dart';
 import 'package:shimmer/shimmer.dart';
@@ -57,13 +59,9 @@ class _WalletPageState extends State<WalletPage> {
     final textTheme = Theme.of(context).textTheme;
     final bodyText1 = textTheme.bodyText1!;
     final bodyText2 = textTheme.bodyText2!;
+
     return Container(
-      decoration: const BoxDecoration(
-        color: kBackgroundColor2,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(kDefaultMargin / 2),
-        ),
-      ),
+      color: Colors.white,
       child: Column(
         children: [
           Container(
@@ -76,34 +74,25 @@ class _WalletPageState extends State<WalletPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        AppLocalizations.of(context)!.wallet,
-                        style: bodyText1.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        '${AppLocalizations.of(context)!.estAmount} (BTC)',
+                        '${AppLocalizations.of(context)!.estAmount} (\$)',
                         style: bodyText2.copyWith(fontSize: 12),
                       ),
                       const SizedBox(height: 5),
                       Row(
                         children: [
                           Text(
-                            "0 ",
+                            getBalance().toString(),
                             style: bodyText1.copyWith(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
                             ),
-                          ),
-                          Text(
-                            '(\$0.0)',
-                            style: bodyText2.copyWith(fontSize: 16),
-                          ),
+                          )
                         ],
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 5),
                 SizedBox(
                   width: 200,
                   child: Column(children: [
@@ -115,9 +104,7 @@ class _WalletPageState extends State<WalletPage> {
                         bottom: 0,
                       ),
                       onPressed: () {
-                        /*      Navigator.of(context).push(CustomPageRoute(
-                                screen: const RecieveAssetList(),
-                              )); */
+                        context.router.push(const RecieveAssetList());
                       },
                       widget: Text(
                         AppLocalizations.of(context)!.receive,
@@ -135,9 +122,7 @@ class _WalletPageState extends State<WalletPage> {
                         bottom: 0,
                       ),
                       onPressed: () {
-                        /*   Navigator.of(context).push(CustomPageRoute(
-                                screen: const SendAssetList(),
-                              )); */
+                        context.router.push(const SendAssetList());
                       },
                       widget: Text(
                         AppLocalizations.of(context)!.send,
@@ -151,26 +136,38 @@ class _WalletPageState extends State<WalletPage> {
               ],
             ),
           ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              child: _isLoading
+                  ? buildLoadingBody()
+                  : _hasError
+                      ? CustomErrorWidget(
+                          error: AppLocalizations.of(context)!
+                              .anErrorOccurredWithTheDataFetchPleaseTryAgain,
+                          onRefresh: () {
+                            getData();
+                          })
+                      : buildBody(),
             ),
-            child: _isLoading
-                ? buildLoadingBody()
-                : _hasError
-                    ? CustomErrorWidget(
-                        error: AppLocalizations.of(context)!
-                            .anErrorOccurredWithTheDataFetchPleaseTryAgain,
-                        onRefresh: () {
-                          getData();
-                        })
-                    : buildBody(),
           ),
         ],
       ),
     );
+  }
+
+  double getBalance() {
+    final walletDatum = walletData.data ?? [];
+    double amount = 0;
+
+    for (final e in walletDatum) {
+      amount += (e.balance ?? 0);
+    }
+    return amount;
   }
 
   ListView buildBody() {
@@ -178,8 +175,6 @@ class _WalletPageState extends State<WalletPage> {
     return ListView.separated(
       separatorBuilder: (context, index) => const Divider(),
       padding: const EdgeInsets.all(0),
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
       itemCount: walletDatum.length,
       itemBuilder: (ctx, index) {
         return CoinShow(
@@ -188,13 +183,8 @@ class _WalletPageState extends State<WalletPage> {
             final acceptedCoins = ['btc', 'ltc', 'doge', 'bch'];
             if (acceptedCoins
                 .contains(walletDatum[index].coinSymbol?.toLowerCase())) {
-              /*     Navigator.of(context).push(
-                CustomPageRoute(
-                  screen: WalletTransactionsScreen(
-                    walletDatum: walletDatum[index],
-                  ),
-                ),
-              ); */
+              context.router.push(
+                  WalletTransactionsRoute(walletDatum: walletDatum[index]));
             } else {
               MyApp.scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
                   content: Text(
@@ -209,8 +199,6 @@ class _WalletPageState extends State<WalletPage> {
   ListView buildLoadingBody() {
     return ListView.builder(
       padding: const EdgeInsets.all(0),
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
       itemCount: 10,
       itemBuilder: (ctx, index) {
         return CoinShow(

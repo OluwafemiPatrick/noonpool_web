@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'package:auto_route/auto_route.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/outlined_button.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart' as route;
 
 class SendInputScreen extends StatefulWidget {
   final WalletDatum walletDatum;
@@ -57,15 +60,13 @@ class _SendInputScreenState extends State<SendInputScreen> {
   }
 
   Future showSendAssetStatus() async {
-    /*       final reciever = _initValues[_recipientAddress] ?? '';
+    final reciever = _initValues[_recipientAddress] ?? '';
     final amount = double.tryParse(_initValues[_amount] ?? '') ?? 0;
-Navigator.of(context).pushReplacement(CustomPageRoute(
-      screen: SendAsset(
-        assetDatum: widget.walletDatum,
-        recipientAddress: reciever,
-        amount: amount,
-      ),
-    )); */
+    context.router.push(SendAsset(
+      assetDatum: widget.walletDatum,
+      recipientAddress: reciever,
+      amount: amount,
+    ));
   }
 
   @override
@@ -179,14 +180,12 @@ Navigator.of(context).pushReplacement(CustomPageRoute(
             ),
             onPressed: () async {
               try {
-                /*        final barcodeScanRes = await Navigator.push(
-                    context,
-                    CustomPageRoute(
-                      screen: const _QrScanner(),
-                    ));
+                final barcodeScanRes =
+                    await context.router.push<String>(const route.QrScanner());
+
                 if (barcodeScanRes != null && barcodeScanRes.isNotEmpty) {
                   _recipientAddressController.text = barcodeScanRes;
-                } */
+                }
               } catch (exception) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -223,16 +222,16 @@ Navigator.of(context).pushReplacement(CustomPageRoute(
   }
 }
 
-class _QrScanner extends StatefulWidget {
-  const _QrScanner({
+class QrScanner extends StatefulWidget {
+  const QrScanner({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<_QrScanner> createState() => __QrScannerState();
+  State<QrScanner> createState() => _QrScannerState();
 }
 
-class __QrScannerState extends State<_QrScanner> {
+class _QrScannerState extends State<QrScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   QRViewController? controller;
@@ -282,7 +281,7 @@ class __QrScannerState extends State<_QrScanner> {
 
     late StreamSubscription<Barcode> subscription;
     subscription = controller.scannedDataStream.listen((scanData) {
-      Navigator.pop(context, scanData.code ?? '');
+      context.router.pop<String>(scanData.code ?? '');
       subscription.cancel();
     });
   }
