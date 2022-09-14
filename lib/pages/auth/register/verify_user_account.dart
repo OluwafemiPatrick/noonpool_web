@@ -1,17 +1,22 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/main.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/elevated_button.dart';
 import 'package:noonpool_web/widgets/text_button.dart';
 import 'package:pinput/pinput.dart';
-import '../login/login_sceen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VerifyUserAccount extends StatefulWidget {
+  final String email;
   const VerifyUserAccount({
     Key? key,
+    required this.email,
   }) : super(key: key);
 
   @override
@@ -140,13 +145,9 @@ class _VerifyUserAccountState extends State<VerifyUserAccount> {
                       _isLoading = true;
                     });
                     try {
-                      final email = ((ModalRoute.of(context)
-                              ?.settings
-                              .arguments) as String?) ??
-                          '';
                       final code = otpFieldController.text.trim();
                       await verifyUserOTP(
-                        email: email,
+                        email: widget.email,
                         code: code,
                       );
                       () {
@@ -158,11 +159,8 @@ class _VerifyUserAccountState extends State<VerifyUserAccount> {
                             ),
                           ),
                         );
-                        /*    Navigator.of(context).pushAndRemoveUntil(
-                          CustomPageRoute(
-                            screen: const LoginScreen(),
-                          ),
-                          (route) => route.isFirst); */
+                        context.router.pushAndPopUntil(const LoginRoute(),
+                            predicate: (route) => false);
                       }();
                     } catch (exception) {
                       MyApp.scaffoldMessengerKey.currentState?.showSnackBar(
@@ -246,14 +244,11 @@ class _VerifyUserAccountState extends State<VerifyUserAccount> {
     );
 
     try {
-      final email =
-          ((ModalRoute.of(context)?.settings.arguments) as String?) ?? '';
-
       await sendUserOTP(
-        email: email,
+        email: widget.email,
       );
       Navigator.of(context).pop();
-      ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+      MyApp.scaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
           content: Text(
             AppLocalizations.of(context)!.aNewOtpHasBeenSentToYourAccount,

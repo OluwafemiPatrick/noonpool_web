@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:async/async.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/elevated_button.dart';
 import 'package:noonpool_web/widgets/text_button.dart';
 
@@ -102,13 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
           password: password,
           userName: name,
         );
-
-        /*  Navigator.of(context).pushReplacement(
-          CustomPageRoute(
-            screen: const RegistrationConfirmationScreen(),
-            argument: email,
-          ),
-        ); */
+        context.router.replace(RegistrationConfirmationScreen(email: email));
       } else {
         () {
           showErrorDialog(
@@ -175,51 +173,53 @@ class _RegisterPageState extends State<RegisterPage> {
     final bodyText1 = themeData.textTheme.bodyText1!;
     final bodyText2 = themeData.textTheme.bodyText2!;
 
-    return Scaffold(
-      appBar: buildAppBar(bodyText1),
-      body: Padding(
-        padding: const EdgeInsets.all(kDefaultPadding / 2),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...buildNameTextField(bodyText2, bodyText1),
-                const SizedBox(
-                  height: kDefaultMargin / 2,
-                ),
-                ...buildEmailTextField(bodyText2),
-                const SizedBox(
-                  height: kDefaultMargin / 2,
-                ),
-                ...buildPasswordTextField(bodyText2),
-                const SizedBox(
-                  height: kDefaultMargin / 2,
-                ),
-                ...buildRetypePasswordTextField(bodyText2),
-                const SizedBox(
-                  height: kDefaultMargin,
-                ),
-                buildSignUpButton(bodyText2),
-                const SizedBox(
-                  height: kDefaultMargin / 2,
-                ),
-              ],
+    return Column(
+      children: [
+        buildAppBar(bodyText1),
+        Padding(
+          padding: const EdgeInsets.all(kDefaultPadding / 2),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...buildNameTextField(bodyText2, bodyText1),
+                  const SizedBox(
+                    height: kDefaultMargin / 2,
+                  ),
+                  ...buildEmailTextField(bodyText2),
+                  const SizedBox(
+                    height: kDefaultMargin / 2,
+                  ),
+                  ...buildPasswordTextField(bodyText2),
+                  const SizedBox(
+                    height: kDefaultMargin / 2,
+                  ),
+                  ...buildRetypePasswordTextField(bodyText2),
+                  const SizedBox(
+                    height: kDefaultMargin,
+                  ),
+                  buildSignUpButton(bodyText2),
+                  const SizedBox(
+                    height: kDefaultMargin / 2,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 
   AppBar buildAppBar(TextStyle bodyText1) {
     return AppBar(
-      leading: const BackButton(
-        color: Colors.black,
-      ),
+      leading: null,
+      automaticallyImplyLeading: false,
       elevation: 0,
       backgroundColor: Colors.transparent,
+      centerTitle: false,
       title: Text(
         AppLocalizations.of(context)!.signUp,
         style: bodyText1,

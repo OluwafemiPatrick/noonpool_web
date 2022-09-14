@@ -1,11 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 import 'package:noonpool_web/constants/style.dart';
-import 'package:noonpool_web/controller/auth_controller.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/main.dart';
-import 'package:noonpool_web/pages/home/home_page.dart';
 import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/elevated_button.dart';
 import 'package:noonpool_web/widgets/outlined_button.dart';
@@ -80,21 +77,15 @@ class _LoginPageState extends State<LoginPage> {
             isEnabled: loginDetails.userDetails!.g2FAEnabled ?? false,
           );
 
-          context.router.pushNamed('/');
+          context.router.popUntilRoot();
         }
 
         if (loginDetails.userDetails!.g2FAEnabled == true) {
-          /*    () {
-            Navigator.of(context).push(
-              CustomPageRoute(
-                screen: VerifyOtp(
-                  backEnaled: false,
-                  onNext: (_) => proceed(),
-                  id: loginDetails.userDetails!.id ?? '',
-                ),
-              ),
-            );
-          }(); */
+          context.router.push(VerifyOtpRoute(
+            backEnaled: false,
+            onNext: (_) => proceed(),
+            id: loginDetails.userDetails!.id ?? '',
+          ));
         } else {
           proceed();
         }
@@ -239,12 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                 Text(AppLocalizations.of(context)!.aNewOtpHasBeenSentToMail),
           ),
         );
-        /*    Navigator.of(context).push(
-          CustomPageRoute(
-            screen: const VerifyUserAccount(),
-            argument: email,
-          ),
-        ); */
+        context.router.push(VerifyUserAccount(email: email));
       }();
     } catch (exception) {
       Navigator.of(context).pop();
@@ -262,37 +248,39 @@ class _LoginPageState extends State<LoginPage> {
     final bodyText1 = themeData.textTheme.bodyText1!;
     final bodyText2 = themeData.textTheme.bodyText2!;
 
-    return Scaffold(
-      appBar: buildAppBar(bodyText1),
-      body: Padding(
-        padding: const EdgeInsets.all(kDefaultPadding / 2),
-        child: SingleChildScrollView(
-            child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...buildEmailTextField(bodyText2),
-              const SizedBox(
-                height: kDefaultMargin / 2,
-              ),
-              ...buildPasswordTextField(bodyText2),
-              const SizedBox(
-                height: kDefaultMargin * 2,
-              ),
-              buildSignInButton(bodyText2),
-              const SizedBox(
-                height: kDefaultMargin / 2,
-              ),
-              buildForgotPassword(bodyText2),
-              const SizedBox(
-                height: kDefaultMargin / 2,
-              ),
-              buildRegisterButton(bodyText2)
-            ],
-          ),
-        )),
-      ),
+    return Column(
+      children: [
+        buildAppBar(bodyText1),
+        Padding(
+          padding: const EdgeInsets.all(kDefaultPadding / 2),
+          child: SingleChildScrollView(
+              child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...buildEmailTextField(bodyText2),
+                const SizedBox(
+                  height: kDefaultMargin / 2,
+                ),
+                ...buildPasswordTextField(bodyText2),
+                const SizedBox(
+                  height: kDefaultMargin * 2,
+                ),
+                buildSignInButton(bodyText2),
+                const SizedBox(
+                  height: kDefaultMargin / 2,
+                ),
+                buildForgotPassword(bodyText2),
+                const SizedBox(
+                  height: kDefaultMargin / 2,
+                ),
+                buildRegisterButton(bodyText2)
+              ],
+            ),
+          )),
+        ),
+      ],
     );
   }
 
@@ -425,7 +413,7 @@ class _LoginPageState extends State<LoginPage> {
       alignment: Alignment.center,
       child: TextButton(
         onPressed: () {
-          Get.find<AuthController>().updateCurrentPage(2);
+          context.router.push(const ForgotPasswordRoute());
         },
         style: TextButton.styleFrom(
           textStyle: bodyText2,
@@ -462,7 +450,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
       onTap: () {
-        Get.find<AuthController>().updateCurrentPage(1);
+        context.router.push(const RegisterRoute());
       },
     );
   }

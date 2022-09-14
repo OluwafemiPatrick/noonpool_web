@@ -1,9 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/elevated_button.dart';
-import '../login/login_sceen.dart';
 
 class ForgotPasswordConfirmationScreen extends StatefulWidget {
   const ForgotPasswordConfirmationScreen({Key? key}) : super(key: key);
@@ -46,11 +47,10 @@ class _ForgotPasswordConfirmationScreenState
             const Spacer(),
             CustomElevatedButton(
               onPressed: () {
-                /*     Navigator.of(context).pushAndRemoveUntil(
-                    CustomPageRoute(
-                      screen: const LoginScreen(),
-                    ),
-                    (route) => route.isFirst); */
+                context.router.pushAndPopUntil(
+                  const LoginRoute(),
+                  predicate: (route) => route.isFirst,
+                );
               },
               widget: Text(
                 AppLocalizations.of(context)!.loginToAccount,

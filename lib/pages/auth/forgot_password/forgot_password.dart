@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:noonpool_web/constants/style.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'forgot_password_stage1.dart';
 import 'forgot_password_stage2.dart';
 import 'forgot_password_stage3.dart';
@@ -44,62 +46,62 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           return true;
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          leading: const BackButton(
-            color: Colors.black,
+      child: Column(
+        children: [
+          AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            leading: null,
+            automaticallyImplyLeading: false,
+            title: Text(
+              AppLocalizations.of(context)!.forgotPassword,
+              style: bodyText1,
+            ),
           ),
-          title: Text(
-            AppLocalizations.of(context)!.forgotPassword,
-            style: bodyText1,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: PageView(
+                    controller: pageController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      ForgotPasswordStage1(
+                        navigateNext: (email) {
+                          setState(() {
+                            this.email = email;
+                          });
+                          onPageChanged(1);
+                        },
+                      ),
+                      ForgotPasswordStage2(
+                        email: email,
+                        navigateNext: () {
+                          onPageChanged(2);
+                        },
+                      ),
+                      ForgotPasswordStage3(
+                        email: email,
+                        onDone: () {
+                          context.router.replace(
+                              const ForgotPasswordConfirmationScreen());
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                buildBottomWidget(),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
           ),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: PageView(
-                controller: pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  ForgotPasswordStage1(
-                    navigateNext: (email) {
-                      setState(() {
-                        this.email = email;
-                      });
-                      onPageChanged(1);
-                    },
-                  ),
-                  ForgotPasswordStage2(
-                    email: email,
-                    navigateNext: () {
-                      onPageChanged(2);
-                    },
-                  ),
-                  ForgotPasswordStage3(
-                    email: email,
-                    onDone: () {
-                      /*   Navigator.of(context).pushReplacement(
-                        CustomPageRoute(
-                          screen: const ForgotPasswordConfirmationScreen(),
-                        ),
-                      ); */
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            buildBottomWidget(),
-            const SizedBox(
-              height: 10,
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
