@@ -1,5 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:noonpool_web/pages/auth/auth_screen.dart';
+import 'package:noonpool_web/pages/auth/forgot_password/forgot_password.dart';
+import 'package:noonpool_web/pages/auth/login/login_sceen.dart';
+import 'package:noonpool_web/pages/auth/register/register_sceen.dart';
 import 'package:noonpool_web/pages/calculator/calculator_page.dart';
 import 'package:noonpool_web/pages/home/home_page.dart';
 import 'package:noonpool_web/pages/home/home_page_body.dart';

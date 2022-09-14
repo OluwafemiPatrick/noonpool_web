@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/controller/app_bar_controller.dart';
-import 'package:noonpool_web/pages/calculator/calculator_page.dart';
-import 'package:noonpool_web/pages/pool/pool_data.dart';
+import 'package:noonpool_web/pages/auth/auth_screen.dart';
 import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/svg_image.dart';
 
@@ -63,7 +63,9 @@ class CustomAppBar extends StatelessWidget {
           _button2(
             'Sign In',
             bodyText1,
-            () {},
+            () {
+              showAuthDialog(context);
+            },
           ),
           _button2(
             'Sign Up',
@@ -74,6 +76,56 @@ class CustomAppBar extends StatelessWidget {
         ],
       );
     });
+  }
+
+  void showAuthDialog(BuildContext context) async {
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+
+    Dialog dialog = Dialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+      ),
+      elevation: 5,
+      child: Container(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        height: height * 0.7,
+        width: width * 0.7,
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        child: Row(
+          children: [
+            Expanded(
+                child: Image.asset(
+              'assets/images/header_bg.png',
+              height: double.infinity,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            )),
+            const Expanded(
+              child: AuthPage(
+                startPage: 0,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    showGeneralDialog(
+      context: context,
+      barrierLabel: "Authentication",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionDuration: const Duration(milliseconds: 500),
+      pageBuilder: (_, __, ___) => dialog,
+      transitionBuilder: (_, anim, __, child) => FadeTransition(
+        opacity: Tween(begin: 0.0, end: 1.0).animate(anim),
+        child: child,
+      ),
+    );
   }
 
   Widget _button2(

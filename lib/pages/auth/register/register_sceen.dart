@@ -6,14 +6,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:noonpool_web/widgets/elevated_button.dart';
 import 'package:noonpool_web/widgets/text_button.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterPageState extends State<RegisterPage> {
   static const _email = "email";
   static const _name = "name";
   static const _password = "password";

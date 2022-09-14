@@ -8,18 +8,30 @@ import 'package:noonpool_web/models/wallet_data/datum.dart';
 import 'package:noonpool_web/models/wallet_data/wallet_data.dart';
 import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/error_widget.dart';
+import 'package:noonpool_web/widgets/login_needed_widget.dart';
 import 'package:noonpool_web/widgets/outlined_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class WalletPage extends StatefulWidget {
+class WalletPage extends StatelessWidget {
   const WalletPage({Key? key}) : super(key: key);
 
   @override
-  State<WalletPage> createState() => _WalletPageState();
+  Widget build(BuildContext context) {
+    return const LoginNeededWidget(
+      child: _WalletPage(),
+    );
+  }
 }
 
-class _WalletPageState extends State<WalletPage> {
+class _WalletPage extends StatefulWidget {
+  const _WalletPage({Key? key}) : super(key: key);
+
+  @override
+  State<_WalletPage> createState() => _WalletPageState();
+}
+
+class _WalletPageState extends State<_WalletPage> {
   bool _isLoading = true;
   bool _hasError = false;
   WalletData walletData = WalletData();

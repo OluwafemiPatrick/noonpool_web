@@ -1,21 +1,25 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:noonpool_web/constants/style.dart';
+import 'package:noonpool_web/controller/auth_controller.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/main.dart';
+import 'package:noonpool_web/pages/home/home_page.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/elevated_button.dart';
 import 'package:noonpool_web/widgets/outlined_button.dart';
 import '../../../helpers/shared_preference_util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../register/verify_user_account.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginPage> {
   static const _email = "email";
   static const _password = "password";
   bool _isHidden = true;
@@ -76,12 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
             isEnabled: loginDetails.userDetails!.g2FAEnabled ?? false,
           );
 
-          /*  Navigator.of(context).pushAndRemoveUntil(
-            CustomPageRoute(
-              screen: const MainScreen(),
-            ),
-            (route) => false,
-          ); */
+          context.router.pushNamed('/');
         }
 
         if (loginDetails.userDetails!.g2FAEnabled == true) {
@@ -112,7 +111,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void showVerificationDialog() {
-    //show verification status
+    final size = MediaQuery.of(context).size;
+
+    final width = size.width;
+
     final textTheme = Theme.of(context).textTheme;
     final bodyText2 = textTheme.bodyText2;
     Dialog dialog = Dialog(
@@ -120,6 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.all(Radius.circular(5))),
       elevation: 5,
       child: Container(
+        width: width * .4,
         decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
             borderRadius: const BorderRadius.all(Radius.circular(8))),
@@ -174,6 +177,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void showResendDialog() async {
+    final size = MediaQuery.of(context).size;
+
+    final width = size.width;
     final textTheme = Theme.of(context).textTheme;
     final bodyText2 = textTheme.bodyText2;
     Dialog dialog = Dialog(
@@ -181,6 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.all(Radius.circular(10))),
       elevation: 5,
       child: Container(
+        width: width * .4,
         decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
             borderRadius: const BorderRadius.all(Radius.circular(10))),
@@ -189,10 +196,10 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(
-              height: 40,
-              width: 40,
+              height: 60,
+              width: 60,
               child: CircularProgressIndicator.adaptive(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.black,
               ),
             ),
             const SizedBox(
@@ -257,49 +264,44 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       appBar: buildAppBar(bodyText1),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(kDefaultPadding / 2),
-          child: SingleChildScrollView(
-              child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: kDefaultMargin,
-                ),
-                ...buildEmailTextField(bodyText2),
-                const SizedBox(
-                  height: kDefaultMargin / 2,
-                ),
-                ...buildPasswordTextField(bodyText2),
-                const SizedBox(
-                  height: kDefaultMargin * 2,
-                ),
-                buildSignInButton(bodyText2),
-                const SizedBox(
-                  height: kDefaultMargin / 2,
-                ),
-                buildForgotPassword(bodyText2),
-                const SizedBox(
-                  height: kDefaultMargin / 2,
-                ),
-                buildRegisterButton(bodyText2)
-              ],
-            ),
-          )),
-        ),
+      body: Padding(
+        padding: const EdgeInsets.all(kDefaultPadding / 2),
+        child: SingleChildScrollView(
+            child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...buildEmailTextField(bodyText2),
+              const SizedBox(
+                height: kDefaultMargin / 2,
+              ),
+              ...buildPasswordTextField(bodyText2),
+              const SizedBox(
+                height: kDefaultMargin * 2,
+              ),
+              buildSignInButton(bodyText2),
+              const SizedBox(
+                height: kDefaultMargin / 2,
+              ),
+              buildForgotPassword(bodyText2),
+              const SizedBox(
+                height: kDefaultMargin / 2,
+              ),
+              buildRegisterButton(bodyText2)
+            ],
+          ),
+        )),
       ),
     );
   }
 
   AppBar buildAppBar(TextStyle bodyText1) {
     return AppBar(
-      leading: const BackButton(
-        color: Colors.black,
-      ),
+      leading: null,
+      automaticallyImplyLeading: false,
       elevation: 0,
+      centerTitle: false,
       backgroundColor: Colors.transparent,
       title: Text(
         AppLocalizations.of(context)!.signIn,
@@ -423,9 +425,7 @@ class _LoginScreenState extends State<LoginScreen> {
       alignment: Alignment.center,
       child: TextButton(
         onPressed: () {
-          /*  Navigator.of(context).push(
-            CustomPageRoute(screen: const ForgotPasswordScreen()),
-          ); */
+          Get.find<AuthController>().updateCurrentPage(2);
         },
         style: TextButton.styleFrom(
           textStyle: bodyText2,
@@ -462,8 +462,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       onTap: () {
-        /*      Navigator.of(context)
-            .push(CustomPageRoute(screen: const RegisterScreen())); */
+        Get.find<AuthController>().updateCurrentPage(1);
       },
     );
   }

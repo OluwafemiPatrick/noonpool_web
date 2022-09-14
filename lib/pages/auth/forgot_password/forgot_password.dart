@@ -5,14 +5,14 @@ import 'forgot_password_stage1.dart';
 import 'forgot_password_stage2.dart';
 import 'forgot_password_stage3.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   String email = '';
 
   final pageController = PageController();

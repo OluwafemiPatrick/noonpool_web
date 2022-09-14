@@ -1,6 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/main.dart';
 import 'package:noonpool_web/models/worker_data/worker_data.dart';
 import 'package:noonpool_web/pages/pool/widget/pool_statistics_title.dart';
+import 'package:noonpool_web/widgets/login_needed_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../widgets/error_widget.dart';
@@ -47,19 +49,21 @@ class _PoolPageState extends State<PoolPage> {
     final bodyText1 = textTheme.bodyText1!;
     final bodyText2 = textTheme.bodyText2!;
 
-    return FocusDetector(
-      onFocusGained: () {
-        getUserData();
-      },
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            buildAppBar(bodyText1, bodyText2),
-            Expanded(
-              child: buildBody(bodyText2, bodyText1),
-            )
-          ],
+    return LoginNeededWidget(
+      child: FocusDetector(
+        onFocusGained: () {
+          getUserData();
+        },
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            children: [
+              buildAppBar(bodyText1, bodyText2),
+              Expanded(
+                child: buildBody(bodyText2, bodyText1),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -178,7 +182,7 @@ class _PoolPageState extends State<PoolPage> {
                 height: kDefaultMargin / 4,
               ),
               Text(
-                '${workerData.data?.hash10min ?? ''} H/s',
+                getHashrate(workerData.data?.hash10min ?? 0),
                 style: bodyText2.copyWith(
                     fontSize: 15, fontWeight: FontWeight.w500),
               ),
@@ -191,7 +195,7 @@ class _PoolPageState extends State<PoolPage> {
                 height: kDefaultMargin / 4,
               ),
               Text(
-                '${workerData.data?.hash1hr ?? ''} H/s',
+                getHashrate(workerData.data?.hash1hr ?? 0),
                 style: bodyText2.copyWith(
                     fontSize: 15, fontWeight: FontWeight.w500),
               ),
@@ -207,7 +211,7 @@ class _PoolPageState extends State<PoolPage> {
                 height: kDefaultMargin / 4,
               ),
               Text(
-                '${workerData.data?.hash1day ?? ''} H/s',
+                getHashrate(workerData.data?.hash1day ?? 0),
                 style: bodyText2.copyWith(
                     fontSize: 15, fontWeight: FontWeight.w500),
               ),
@@ -658,7 +662,7 @@ class _PoolPageState extends State<PoolPage> {
 }
 
 class _PoolDataWidget extends StatelessWidget {
-  final int hashrate;
+  final double hashrate;
   final String workerId;
   final double estEarnings;
   final String stat;
@@ -716,7 +720,7 @@ class _PoolDataWidget extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              getHashrate(),
+              getHashrate(hashrate),
               style: bodyText2,
               textAlign: TextAlign.center,
             ),
@@ -783,82 +787,68 @@ class _PoolDataWidget extends StatelessWidget {
       ),
     );
   }
+}
 
-  String getHashrate() {
-    debugPrint(hashrate.toString());
-    String hashrateAsString = '';
-    var diffLength = hashrate.toStringAsFixed(0).length;
-    int mod = diffLength % 3;
+String getHashrate(double hashrate) {
+  String hashrateAsString = '';
+  final diffLength = hashrate.toStringAsFixed(0).length;
 
-    String digit_1 = hashrate.toString()[0];
-    String digit_2 =
-        hashrate.toString().length < 2 ? '0' : hashrate.toString()[1];
-    String digit_3 =
-        hashrate.toString().length < 3 ? '0' : hashrate.toString()[2];
+  if (diffLength <= 3) {
+    final division = (hashrate / pow(10, 0));
 
-    if (diffLength <= 3) {
-      if (mod == 0) {
-        hashrateAsString = "$digit_1$digit_2$digit_3 H/s";
-      } else if (mod == 1) {
-        hashrateAsString = "$digit_1.$digit_2$digit_3 H/s";
-      } else {
-        hashrateAsString = "$digit_1$digit_2.$digit_3 H/s";
-      }
-    }
-    if (diffLength > 3 && diffLength <= 6) {
-      if (mod == 0) {
-        hashrateAsString = "$digit_1$digit_2$digit_3 KH/s";
-      } else if (mod == 1) {
-        hashrateAsString = "$digit_1.$digit_2$digit_3 KH/s";
-      } else {
-        hashrateAsString = "$digit_1$digit_2.$digit_3 KH/s";
-      }
-    }
-    if (diffLength > 6 && diffLength <= 9) {
-      if (mod == 0) {
-        hashrateAsString = "$digit_1$digit_2$digit_3 MH/s";
-      } else if (mod == 1) {
-        hashrateAsString = "$digit_1.$digit_2$digit_3 MH/s";
-      } else {
-        hashrateAsString = "$digit_1$digit_2.$digit_3 MH/s";
-      }
-    }
-    if (diffLength > 9 && diffLength <= 12) {
-      if (mod == 0) {
-        hashrateAsString = "$digit_1$digit_2$digit_3 GH/s";
-      } else if (mod == 1) {
-        hashrateAsString = "$digit_1.$digit_2$digit_3 GH/s";
-      } else {
-        hashrateAsString = "$digit_1$digit_2.$digit_3 GH/s";
-      }
-    }
-    if (diffLength > 12 && diffLength <= 15) {
-      if (mod == 0) {
-        hashrateAsString = "$digit_1$digit_2$digit_3 TH/s";
-      } else if (mod == 1) {
-        hashrateAsString = "$digit_1.$digit_2$digit_3 TH/s";
-      } else {
-        hashrateAsString = "$digit_1$digit_2.$digit_3 TH/s";
-      }
-    }
-    if (diffLength > 15 && diffLength <= 18) {
-      if (mod == 0) {
-        hashrateAsString = "$digit_1$digit_2$digit_3 PH/s";
-      } else if (mod == 1) {
-        hashrateAsString = "$digit_1.$digit_2$digit_3 PH/s";
-      } else {
-        hashrateAsString = "$digit_1$digit_2.$digit_3 PH/s";
-      }
-    }
-    if (diffLength > 18 && diffLength <= 21) {
-      if (mod == 0) {
-        hashrateAsString = "$digit_1$digit_2$digit_3 EH/s";
-      } else if (mod == 1) {
-        hashrateAsString = "$digit_1.$digit_2$digit_3 EH/s";
-      } else {
-        hashrateAsString = "$digit_1$digit_2.$digit_3 EH/s";
-      }
-    }
-    return hashrateAsString;
+    hashrateAsString = '${division.toString().substring(
+          0,
+          division.toString().length > 4 ? 4 : division.toString().length,
+        )} H/s';
   }
+  if (diffLength > 3 && diffLength <= 6) {
+    final division = (hashrate / pow(10, 3));
+
+    hashrateAsString = '${division.toString().substring(
+          0,
+          division.toString().length > 4 ? 4 : division.toString().length,
+        )} KH/s';
+  }
+  if (diffLength > 6 && diffLength <= 9) {
+    final division = (hashrate / pow(10, 6));
+
+    hashrateAsString = '${division.toString().substring(
+          0,
+          division.toString().length > 4 ? 4 : division.toString().length,
+        )} MH/s';
+  }
+  if (diffLength > 9 && diffLength <= 12) {
+    final division = (hashrate / pow(10, 9));
+
+    hashrateAsString = '${division.toString().substring(
+          0,
+          division.toString().length > 4 ? 4 : division.toString().length,
+        )} GH/s';
+  }
+  if (diffLength > 12 && diffLength <= 15) {
+    final division = (hashrate / pow(10, 12));
+
+    hashrateAsString = '${division.toString().substring(
+          0,
+          division.toString().length > 4 ? 4 : division.toString().length,
+        )} TH/s';
+  }
+  if (diffLength > 15 && diffLength <= 18) {
+    final division = (hashrate / pow(10, 15));
+
+    hashrateAsString = '${division.toString().substring(
+          0,
+          division.toString().length > 4 ? 4 : division.toString().length,
+        )} PH/s';
+  }
+  if (diffLength > 18 && diffLength <= 21) {
+    debugPrint(diffLength.toString());
+    final division = (hashrate / pow(10, 18));
+
+    hashrateAsString = '${division.toString().substring(
+          0,
+          division.toString().length > 4 ? 4 : division.toString().length,
+        )} EH/s';
+  }
+  return hashrateAsString;
 }
