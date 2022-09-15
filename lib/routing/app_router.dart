@@ -12,6 +12,7 @@ import 'package:noonpool_web/pages/calculator/calculator_page.dart';
 import 'package:noonpool_web/pages/home/home_page.dart';
 import 'package:noonpool_web/pages/home/home_page_body.dart';
 import 'package:noonpool_web/pages/otp/otp_screen.dart';
+import 'package:noonpool_web/pages/otp/update_2fa.dart';
 import 'package:noonpool_web/pages/otp/verify_otp.dart';
 import 'package:noonpool_web/pages/pool/pool_data.dart';
 import 'package:noonpool_web/pages/recieve_assets/receive_asset.dart';
@@ -46,8 +47,12 @@ Route<T> fadePageBuilder<T>(
       initial: true,
       children: [
         AutoRoute(
-          page: HomeBody,
+          page: Update2FA,
           initial: true,
+        ),
+        AutoRoute(
+          page: HomeBody,
+          path: 'home',
         ),
         AutoRoute(
           page: CalculatorPage,

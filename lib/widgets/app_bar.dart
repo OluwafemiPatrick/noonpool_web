@@ -74,36 +74,40 @@ class _CustomAppBarState extends State<CustomAppBar> {
             width: 80,
           ),
           const SizedBox(width: 10),
-          _button2('Home', bodyText1, () {
-            context.router.push(const HomeBody());
-          },
-              isSelected: controller.isItemSelected(0),
-              icon: 'assets/icons/home.svg'),
+          if (!controller.isRefreshing)
+            _button2('Home', bodyText1, () {
+              context.router.push(const HomeBody());
+            },
+                isSelected: controller.isItemSelected(0),
+                icon: 'assets/icons/home.svg'),
           //
-          _button2('Pool', bodyText1, () {
-            context.router.push(const PoolRoute());
-          },
-              isSelected: controller.isItemSelected(1),
-              icon: 'assets/icons/pool.svg'),
+          if (!controller.isRefreshing)
+            _button2('Pool', bodyText1, () {
+              context.router.push(const PoolRoute());
+            },
+                isSelected: controller.isItemSelected(1),
+                icon: 'assets/icons/pool.svg'),
           //
-          _button2('Calculator', bodyText1, () {
-            context.router.push(const CalculatorRoute());
-          },
-              isSelected: controller.isItemSelected(2),
-              icon: 'assets/icons/calculator.svg'),
+          if (!controller.isRefreshing)
+            _button2('Calculator', bodyText1, () {
+              context.router.push(const CalculatorRoute());
+            },
+                isSelected: controller.isItemSelected(2),
+                icon: 'assets/icons/calculator.svg'),
 
-          _button2('Wallet', bodyText1, () {
-            context.router.push(const WalletRoute());
-          },
-              isSelected: controller.isItemSelected(3),
-              icon: 'assets/icons/wallet.svg'),
+          if (!controller.isRefreshing)
+            _button2('Wallet', bodyText1, () {
+              context.router.push(const WalletRoute());
+            },
+                isSelected: controller.isItemSelected(3),
+                icon: 'assets/icons/wallet.svg'),
           const Spacer(),
           _button2(
             'APP',
             bodyText1,
             () {},
           ),
-          if (!controller.isUserLoggedIn)
+          if (!controller.isUserLoggedIn && !controller.isRefreshing)
             _button2(
               'Sign In',
               bodyText1,
@@ -111,7 +115,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 context.router.navigate(const LoginRoute());
               },
             ),
-          if (!controller.isUserLoggedIn)
+          if (!controller.isUserLoggedIn && !controller.isRefreshing)
             _button2(
               'Sign Up',
               bodyText1,
@@ -120,7 +124,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
               },
             ),
           const SizedBox(width: 10),
-          if (controller.isUserLoggedIn) profile(bodyText1),
+          if (controller.isUserLoggedIn && !controller.isRefreshing)
+            profile(bodyText1),
           const SizedBox(width: 10),
           moreSettings(bodyText1, context),
           const SizedBox(width: 10),

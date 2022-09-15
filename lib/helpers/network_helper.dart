@@ -436,6 +436,7 @@ Future<RecieveData> walletData({
 }) async {
   final userId = AppPreferences.userId;
   try {
+    debugPrint("${baseUrl}wallet?id=$userId&network=${walletDatum.coinSymbol}");
     final response = await http.get(
       Uri.parse(
           "${baseUrl}wallet?id=$userId&network=${walletDatum.coinSymbol}"),
@@ -456,6 +457,9 @@ Future<RecieveData> walletData({
     return Future.error(
         'There is either no or a very weak network connection.');
   } catch (exception) {
-    return Future.error('An error occurred while getting data');
+    debugPrint(exception.toString());
+
+    return Future.error(exception.toString());
+    // return Future.error('An error occurred while getting data');
   }
 }
