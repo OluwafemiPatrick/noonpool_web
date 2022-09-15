@@ -65,11 +65,12 @@ class _ReceiveAssetsState extends State<ReceiveAssets> {
                   getData();
                 })
             : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppBar(
                     elevation: 0,
+                    centerTitle: false,
                     backgroundColor: Colors.transparent,
                     title: Text(
                       '${AppLocalizations.of(context)!.receive} ${widget.walletDatum.coinSymbol}',

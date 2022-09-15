@@ -84,8 +84,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ForgotPasswordStage3(
                         email: email,
                         onDone: () {
-                          context.router.replace(
-                              const ForgotPasswordConfirmationScreen());
+                          context.router
+                              .replace(const ForgotPasswordConfirmationRoute());
                         },
                       ),
                     ],

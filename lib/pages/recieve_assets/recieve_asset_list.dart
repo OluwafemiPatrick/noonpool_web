@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:focus_detector/focus_detector.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/main.dart';
@@ -41,6 +40,7 @@ class _RecieveAssetListState extends State<RecieveAssetList> {
         _isSearch = true;
       });
     });
+    Future.delayed(Duration.zero, fetchUserAssets);
   }
 
   @override
@@ -77,39 +77,36 @@ class _RecieveAssetListState extends State<RecieveAssetList> {
     final bodyText1 = textTheme.bodyText1;
     final coinDatas = searchAsset.data ?? [];
 
-    return FocusDetector(
-      onFocusGained: () {
-        fetchUserAssets();
-      },
-      child: Container(
-        color: Colors.white,
-        child: _isLoading
-            ? buildProgressBar()
-            : _hasError
-                ? CustomErrorWidget(
-                    error: AppLocalizations.of(context)!
-                        .anErrorOccurredWithTheDataFetchPleaseTryAgain,
-                    onRefresh: () {
-                      fetchUserAssets();
-                    })
-                : Column(
-                    children: [
-                      AppBar(
-                        elevation: 0,
-                        backgroundColor: Colors.transparent,
-                        title: Text(
-                          AppLocalizations.of(context)!.receive,
-                          style: bodyText1?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        leading: null,
-                        automaticallyImplyLeading: false,
+    return Container(
+      color: Colors.white,
+      child: _isLoading
+          ? buildProgressBar()
+          : _hasError
+              ? CustomErrorWidget(
+                  error: AppLocalizations.of(context)!
+                      .anErrorOccurredWithTheDataFetchPleaseTryAgain,
+                  onRefresh: () {
+                    fetchUserAssets();
+                  })
+              : Column(
+                  children: [
+                    AppBar(
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                      title: Text(
+                        AppLocalizations.of(context)!.receive,
+                        style: bodyText1?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      if (coinDatas.isNotEmpty || _isSearch) buildSearchBar(),
-                      coinDatas.isEmpty
+                      leading: null,
+                      centerTitle: false,
+                      automaticallyImplyLeading: false,
+                    ),
+                    if (coinDatas.isNotEmpty || _isSearch) buildSearchBar(),
+                    Expanded(
+                      child: coinDatas.isEmpty
                           ? buildEmptyItem()
                           : ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
                               padding: const EdgeInsets.all(0),
                               itemBuilder: (ctx, index) => SendAssetListItem(
                                 walletDatum: coinDatas[index],
@@ -122,8 +119,8 @@ class _RecieveAssetListState extends State<RecieveAssetList> {
                                   ];
                                   if (acceptedCoins.contains(
                                       model.coinSymbol?.toLowerCase())) {
-                                    context.router
-                                        .push(ReceiveAssets(walletDatum: model));
+                                    context.router.push(
+                                        ReceiveAssets(walletDatum: model));
                                   } else {
                                     MyApp.scaffoldMessengerKey.currentState
                                         ?.showSnackBar(SnackBar(
@@ -134,9 +131,9 @@ class _RecieveAssetListState extends State<RecieveAssetList> {
                               ),
                               itemCount: coinDatas.length,
                             ),
-                    ],
-                  ),
-      ),
+                    ),
+                  ],
+                ),
     );
   }
 
@@ -204,8 +201,7 @@ class _RecieveAssetListState extends State<RecieveAssetList> {
 
   Widget buildProgressBar() {
     return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(0),
       itemBuilder: (ctx, index) => SendAssetListItem(
         walletDatum: WalletDatum(),

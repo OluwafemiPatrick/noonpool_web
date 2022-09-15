@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:noonpool_web/constants/style.dart';
+import 'package:noonpool_web/controller/app_bar_controller.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/main.dart';
 import 'package:noonpool_web/routing/app_router.gr.dart';
@@ -70,14 +72,17 @@ class _LoginPageState extends State<LoginPage> {
         proceed() {
           AppPreferences.setUserName(
               username: loginDetails.userDetails?.username ?? '');
-          AppPreferences.setId(id: loginDetails.userDetails?.id ?? '');
+          AppPreferences.setIdAndEmail(
+              id: loginDetails.userDetails?.id ?? '',
+              email: loginDetails.userDetails?.email ?? '');
           AppPreferences.setLoginStatus(status: true);
           AppPreferences.setOnBoardingStatus(status: true);
           AppPreferences.set2faSecurityStatus(
             isEnabled: loginDetails.userDetails!.g2FAEnabled ?? false,
           );
-
-          context.router.popUntilRoot();
+          Get.find<AppBarController>()
+              .updateLoginStatus(AppPreferences.loginStatus);
+          context.router.pushAll([const HomeBody()]);
         }
 
         if (loginDetails.userDetails!.g2FAEnabled == true) {

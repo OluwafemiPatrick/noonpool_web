@@ -7,18 +7,18 @@ import 'package:noonpool_web/widgets/elevated_button.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ForgotPasswordStage2 extends StatefulWidget {
+class ChangePasswordStage1 extends StatefulWidget {
   final VoidCallback navigateNext;
   final String email;
-  const ForgotPasswordStage2(
+  const ChangePasswordStage1(
       {Key? key, required this.navigateNext, required this.email})
       : super(key: key);
 
   @override
-  State<ForgotPasswordStage2> createState() => _ForgotPasswordStage2State();
+  State<ChangePasswordStage1> createState() => _ChangePasswordStage1State();
 }
 
-class _ForgotPasswordStage2State extends State<ForgotPasswordStage2> {
+class _ChangePasswordStage1State extends State<ChangePasswordStage1> {
   final stage2FormKey = GlobalKey<FormState>();
   final _otpFieldController = TextEditingController();
   bool _isLoading = false;

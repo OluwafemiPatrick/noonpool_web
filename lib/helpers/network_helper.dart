@@ -373,6 +373,15 @@ Future<WalletTransactions> getSummaryTransactions({
     final decode = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
+      /*  final data =
+          '''{"trxs":[{"hash":"0f56b189a12f4bba5f43be0427dc3c3e08dd7f5c49837b061d15979db4037d91","isSend":false, "network":"bitcoin-cash"},
+	{"hash":"f6b9bdbfa064a85f01fa812b962063f919bd7be6950cdb7a5aeace5cf72aae41","isSend":false, "network":"bitcoin-cash"},
+	{"hash":"b0054876934e4800ce0f64970dfa78daff4b5312f726823200617da8e3dfb72a","isSend":true, "network":"bitcoin-cash"},
+	{"hash":"232faf9be7871fcb451db4971ccce884d997f3efe9d15b143827d515e1e2255b","isSend":true, "network":"bitcoin-cash"},
+	{"hash":"dce7a49750b9b981dcdba0a7b2d261c2695fdf85cf1350e5c351d7e4b89ee643","isSend":false, "network":"bitcoin-cash"}]}'''; */
+      /*  return WalletTransactions.fromMap(
+        jsonDecode(data),
+      ); */
       return WalletTransactions.fromMap(decode);
     } else {
       return Future.error(decode['message'] ?? '');
@@ -427,11 +436,12 @@ Future<RecieveData> walletData({
 }) async {
   final userId = AppPreferences.userId;
   try {
-    //
     final response = await http.get(
       Uri.parse(
           "${baseUrl}wallet?id=$userId&network=${walletDatum.coinSymbol}"),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+      },
     );
     debugPrint(response.request?.url.toString());
     debugPrint(response.body.toString());

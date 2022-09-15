@@ -180,7 +180,9 @@
 
 "updateSuccessful":"Update Successful",
 "requestProcessing":"Request Processing",
-"pleaseBePatientWhileWeProcessYourRequest":"Please be patient while we process your request."
+"pleaseBePatientWhileWeProcessYourRequest":"Please be patient while we process your request.",
+"errorOnCopyIngUrl":"An error occurred while opening your browser, please paste the copied url in your browser",
+"transactionUrlHasBeenCopied":"Transaction url has been copied to your clipboard"
  
 
 

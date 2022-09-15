@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:noonpool_web/constants/style.dart';
-import 'package:noonpool_web/widgets/svg_image.dart';
+import 'package:noonpool_web/constants/style.dart'; 
 
 class HomeFooter1 extends StatelessWidget {
   final List<Map<String, String>> viewPagerData = [

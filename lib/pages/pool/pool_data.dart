@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:focus_detector/focus_detector.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
@@ -29,6 +28,12 @@ class _PoolPageState extends State<PoolPage> {
   bool _isLoading = true;
   bool _hasError = false;
 
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, getUserData);
+  }
+
   final StreamController<int> _poolStatisticsStream = StreamController();
 
   List<String> _poolStatisticsTitles(BuildContext context) => [
@@ -50,20 +55,15 @@ class _PoolPageState extends State<PoolPage> {
     final bodyText2 = textTheme.bodyText2!;
 
     return LoginNeededWidget(
-      child: FocusDetector(
-        onFocusGained: () {
-          getUserData();
-        },
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              buildAppBar(bodyText1, bodyText2),
-              Expanded(
-                child: buildBody(bodyText2, bodyText1),
-              )
-            ],
-          ),
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            buildAppBar(bodyText1, bodyText2),
+            Expanded(
+              child: buildBody(bodyText2, bodyText1),
+            )
+          ],
         ),
       ),
     );
@@ -116,6 +116,7 @@ class _PoolPageState extends State<PoolPage> {
   }
 
   Container buildMiningProfitData(TextStyle bodyText2, SizedBox spacer) {
+    final coinItem = (coin == 'LTC-DOGE') ? 'LTC' : coin;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(
@@ -136,7 +137,7 @@ class _PoolPageState extends State<PoolPage> {
             height: kDefaultMargin / 4,
           ),
           Text(
-            ' ${workerData.data?.estEarnings ?? ''} $coin',
+            ' ${workerData.data?.estEarnings ?? '0.0'} $coinItem',
             style:
                 bodyText2.copyWith(fontSize: 15, fontWeight: FontWeight.w500),
           ),
@@ -149,7 +150,7 @@ class _PoolPageState extends State<PoolPage> {
             height: kDefaultMargin / 4,
           ),
           Text(
-            ' ${workerData.data?.cumEarnings ?? ''} $coin',
+            ' ${workerData.data?.cumEarnings ?? '0.0'} $coinItem',
             style:
                 bodyText2.copyWith(fontSize: 15, fontWeight: FontWeight.w500),
           ),
@@ -641,6 +642,7 @@ class _PoolPageState extends State<PoolPage> {
   }
 
   getUserData() async {
+    debugPrint("called");
     _isLoading = true;
 
     try {

@@ -43,7 +43,9 @@ class MyApp extends StatelessWidget {
       return GetMaterialApp.router(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        locale: locale,
+        locale: locale.languageCode == AppPreferences.defaultLocaleLanguageCode
+            ? null
+            : locale,
         localeResolutionCallback: (locale, supportedLocales) {
           if (supportedLocales.contains(locale)) {
             return locale;

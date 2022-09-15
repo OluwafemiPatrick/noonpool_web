@@ -33,9 +33,7 @@ class _VerifyUserAccountState extends State<VerifyUserAccount> {
       width: 56,
       height: 56,
       textStyle: const TextStyle(
-          fontSize: 20,
-          color: Color.fromRGBO(30, 60, 87, 1),
-          fontWeight: FontWeight.w600),
+          fontSize: 20, color: Colors.black, fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
         border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
         borderRadius: BorderRadius.circular(20),
@@ -88,109 +86,105 @@ class _VerifyUserAccountState extends State<VerifyUserAccount> {
     final textTheme = Theme.of(context).textTheme;
     final bodyText2 = textTheme.bodyText2!;
     final bodyText1 = textTheme.bodyText1!;
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Spacer(),
-                SvgPicture.asset(
-                  'assets/icons/Mail.svg',
-                  height: 250,
-                  width: 250,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(
-                  height: kDefaultMargin,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    AppLocalizations.of(context)!
-                        .pleaseEnterTheOtpThatWasSentToYourAccount,
-                    style: bodyText1,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(
-                  height: kDefaultMargin,
-                ),
-                ...buildOTPField(bodyText2),
-                const SizedBox(
-                  height: kDefaultMargin * 2,
-                ),
-                CustomElevatedButton(
-                  widget: _isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator.adaptive(
-                            backgroundColor: Colors.white,
-                          ),
-                        )
-                      : Text(
-                          AppLocalizations.of(context)!.verifyOtp,
-                          style: bodyText2.copyWith(color: Colors.white),
-                        ),
-                  onPressed: () async {
-                    final isValid = _formKey.currentState?.validate();
-                    if ((isValid ?? false) == false || _isLoading) {
-                      return;
-                    }
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    try {
-                      final code = otpFieldController.text.trim();
-                      await verifyUserOTP(
-                        email: widget.email,
-                        code: code,
-                      );
-                      () {
-                        MyApp.scaffoldMessengerKey.currentState?.showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              AppLocalizations.of(context)!
-                                  .yourAccountHasBeenVerifiedPleaseProceedToLogin,
-                            ),
-                          ),
-                        );
-                        context.router.pushAndPopUntil(const LoginRoute(),
-                            predicate: (route) => false);
-                      }();
-                    } catch (exception) {
-                      MyApp.scaffoldMessengerKey.currentState?.showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            exception.toString(),
-                          ),
-                        ),
-                      );
-                    }
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: kDefaultMargin / 2,
-                ),
-                SizedBox(
-                  child: CustomTextButton(
-                    onPressed: showResendDialog,
-                    widget: Text(
-                      AppLocalizations.of(context)!.resendOtp,
-                    ),
-                  ),
-                ),
-                const Spacer(),
-              ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Spacer(),
+            SvgPicture.asset(
+              'assets/icons/Mail.svg',
+              height: 250,
+              width: 250,
+              fit: BoxFit.contain,
             ),
-          ),
+            const SizedBox(
+              height: kDefaultMargin,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                AppLocalizations.of(context)!
+                    .pleaseEnterTheOtpThatWasSentToYourAccount,
+                style: bodyText1,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(
+              height: kDefaultMargin,
+            ),
+            ...buildOTPField(bodyText2),
+            const SizedBox(
+              height: kDefaultMargin * 2,
+            ),
+            CustomElevatedButton(
+              widget: _isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator.adaptive(
+                        backgroundColor: Colors.white,
+                      ),
+                    )
+                  : Text(
+                      AppLocalizations.of(context)!.verifyOtp,
+                      style: bodyText2.copyWith(color: Colors.white),
+                    ),
+              onPressed: () async {
+                final isValid = _formKey.currentState?.validate();
+                if ((isValid ?? false) == false || _isLoading) {
+                  return;
+                }
+                setState(() {
+                  _isLoading = true;
+                });
+                try {
+                  final code = otpFieldController.text.trim();
+                  await verifyUserOTP(
+                    email: widget.email,
+                    code: code,
+                  );
+                  () {
+                    MyApp.scaffoldMessengerKey.currentState?.showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(context)!
+                              .yourAccountHasBeenVerifiedPleaseProceedToLogin,
+                        ),
+                      ),
+                    );
+                    context.router.pushAndPopUntil(const LoginRoute(),
+                        predicate: (route) => false);
+                  }();
+                } catch (exception) {
+                  MyApp.scaffoldMessengerKey.currentState?.showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        exception.toString(),
+                      ),
+                    ),
+                  );
+                }
+                setState(() {
+                  _isLoading = false;
+                });
+              },
+            ),
+            const SizedBox(
+              height: kDefaultMargin / 2,
+            ),
+            SizedBox(
+              child: CustomTextButton(
+                onPressed: showResendDialog,
+                widget: Text(
+                  AppLocalizations.of(context)!.resendOtp,
+                ),
+              ),
+            ),
+            const Spacer(),
+          ],
         ),
       ),
     );
@@ -214,9 +208,7 @@ class _VerifyUserAccountState extends State<VerifyUserAccount> {
             const SizedBox(
               height: 40,
               width: 40,
-              child: CircularProgressIndicator.adaptive(
-                backgroundColor: Colors.white,
-              ),
+              child: CircularProgressIndicator.adaptive(),
             ),
             const SizedBox(
               height: 20,

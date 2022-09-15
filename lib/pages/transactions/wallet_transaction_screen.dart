@@ -1,14 +1,17 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:noonpool_web/constants/strings.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/main.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
 import 'package:noonpool_web/models/wallet_transactions/transaction.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/error_widget.dart';
 import 'package:noonpool_web/widgets/outlined_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class WalletTransactionsPage extends StatefulWidget {
   final WalletDatum walletDatum;
@@ -245,8 +248,35 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
     );
   }
 
-  void onTransactionItemPressed(Transaction trxSummary) {
-//
+  void onTransactionItemPressed(Transaction trxSummary) async {
+    final url =
+        'https://blockchair.com/${widget.walletDatum.coinName?.toLowerCase()}/transaction/${trxSummary.hash}';
+
+    try {
+      await launchUrlString(url);
+    } catch (exception) {
+      MyApp.scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!.errorOnCopyIngUrl)));
+      try {
+        await FlutterClipboard.copy(url);
+        () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  AppLocalizations.of(context)!.transactionUrlHasBeenCopied),
+            ),
+          );
+        }();
+      } catch (exception) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              exception.toString(),
+            ),
+          ),
+        );
+      }
+    }
   }
 
   Widget buildOldProgressBar() {
@@ -279,79 +309,90 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
     );
   }
 
+  double getBalance() {
+    return widget.walletDatum.balance ?? 0;
+  }
+
   Container buildHeader(TextStyle bodyText2, TextStyle bodyText1) {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height / 6,
       padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Text(
-            '${AppLocalizations.of(context)!.estAmount} (${widget.walletDatum.coinSymbol})',
-            style: bodyText2.copyWith(fontSize: 12),
-          ),
-          const SizedBox(height: 5),
-          Row(
-            children: [
-              Text(
-                '${widget.walletDatum.balance ?? 0} ${widget.walletDatum.coinSymbol ?? ''}',
-                style: bodyText1.copyWith(
-                    fontWeight: FontWeight.bold, fontSize: 16.0),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Text(
-                '(\$ ${formatNumber((widget.walletDatum.usdPrice ?? 0) + .0)})',
-                style: bodyText2.copyWith(fontSize: 12),
-              ),
-            ],
-          ),
-          const Spacer(flex: 1),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: CustomOutlinedButton(
-                  padding: const EdgeInsets.only(
-                    left: kDefaultMargin / 4,
-                    right: kDefaultMargin / 4,
-                    top: 0,
-                    bottom: 0,
-                  ),
-                  onPressed: () {
-                    //
-                  },
-                  widget: Text(
-                    AppLocalizations.of(context)!.receive,
-                    style: bodyText2.copyWith(
-                      color: kPrimaryColor,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${AppLocalizations.of(context)!.estAmount} (${widget.walletDatum.coinSymbol})',
+                  style: bodyText2.copyWith(fontSize: 12),
+                ),
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    Text(
+                      '${AppLocalizations.of(context)!.estAmount} (\$)',
+                      style: bodyText2.copyWith(fontSize: 12),
                     ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      getBalance().toString(),
+                      style: bodyText1.copyWith(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 5),
+          SizedBox(
+            width: 200,
+            child: Column(children: [
+              CustomOutlinedButton(
+                padding: const EdgeInsets.only(
+                  left: kDefaultMargin / 4,
+                  right: kDefaultMargin / 4,
+                  top: 0,
+                  bottom: 0,
+                ),
+                onPressed: () {
+                  context.router
+                      .push(ReceiveAssets(walletDatum: widget.walletDatum));
+                },
+                widget: Text(
+                  AppLocalizations.of(context)!.receive,
+                  style: bodyText2.copyWith(
+                    color: kPrimaryColor,
                   ),
                 ),
               ),
-              const SizedBox(width: 5),
-              Expanded(
-                child: CustomOutlinedButton(
-                  padding: const EdgeInsets.only(
-                    left: kDefaultMargin / 4,
-                    right: kDefaultMargin / 4,
-                    top: 0,
-                    bottom: 0,
-                  ),
-                  onPressed: () {},
-                  widget: Text(
-                    AppLocalizations.of(context)!.send,
-                    style: bodyText2.copyWith(
-                      color: kPrimaryColor,
-                    ),
+              const SizedBox(height: 5),
+              CustomOutlinedButton(
+                padding: const EdgeInsets.only(
+                  left: kDefaultMargin / 4,
+                  right: kDefaultMargin / 4,
+                  top: 0,
+                  bottom: 0,
+                ),
+                onPressed: () {
+                  context.router
+                      .push(SendInputScreen(walletDatum: widget.walletDatum));
+                },
+                widget: Text(
+                  AppLocalizations.of(context)!.send,
+                  style: bodyText2.copyWith(
+                    color: kPrimaryColor,
                   ),
                 ),
               ),
-            ],
+            ]),
           ),
-          const Spacer(flex: 3),
         ],
       ),
     );

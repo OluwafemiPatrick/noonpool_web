@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:noonpool_web/pages/auth/change_password/change_password.dart';
+import 'package:noonpool_web/pages/auth/change_password/change_password_confirmation_screen.dart';
 import 'package:noonpool_web/pages/auth/forgot_password/forgot_password.dart';
 import 'package:noonpool_web/pages/auth/forgot_password/forgot_password_confirmation_screen.dart';
 import 'package:noonpool_web/pages/auth/login/login_sceen.dart';
@@ -17,6 +19,7 @@ import 'package:noonpool_web/pages/recieve_assets/recieve_asset_list.dart';
 import 'package:noonpool_web/pages/send_assets/send_asset.dart';
 import 'package:noonpool_web/pages/send_assets/send_asset_list.dart';
 import 'package:noonpool_web/pages/send_assets/send_input.dart';
+import 'package:noonpool_web/pages/settings/language_changer.dart';
 import 'package:noonpool_web/pages/transactions/wallet_transaction_screen.dart';
 import 'package:noonpool_web/pages/wallet/wallet_page.dart';
 
@@ -51,8 +54,8 @@ Route<T> fadePageBuilder<T>(
           path: 'calculator',
         ),
         AutoRoute(
-          page: QrScanner,
-          path: 'scanner',
+          page: LanguageChanger,
+          path: 'language',
         ),
         AutoRoute(
           page: WalletPage,
@@ -99,7 +102,7 @@ Route<T> fadePageBuilder<T>(
           path: 'forgot-password',
         ),
         AutoRoute(
-          page: ForgotPasswordConfirmationScreen,
+          page: ForgotPasswordConfirmationPage,
           path: 'forgot-password-confirmation',
         ),
         AutoRoute(
@@ -117,6 +120,14 @@ Route<T> fadePageBuilder<T>(
         AutoRoute(
           page: VerifyOtpPage,
           path: 'verify-otp',
+        ),
+        AutoRoute(
+          page: ChangePasswordPage,
+          path: 'change-password',
+        ),
+        AutoRoute(
+          page: ChangePasswordConfirmationPage,
+          path: 'change-password-confirmation',
         ),
       ],
     ),

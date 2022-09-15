@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
+import 'package:noonpool_web/routing/app_router.gr.dart';
 
 import 'package:noonpool_web/widgets/elevated_button.dart';
 import 'receipt_detail_tab.dart';
@@ -35,15 +37,10 @@ class _SendAssetState extends State<SendAsset> {
     final action = await confirmTransaction();
     if (action != null && action) {
       if (AppPreferences.get2faSecurityEnabled) {
-        /*    Navigator.of(context).push(
-          CustomPageRoute(
-            screen: VerifyOtp(
-              backEnaled: false,
-              onNext: (_) => showSendAssetStatus(),
-              id: AppPreferences.userId,
-            ),
-          ),
-        ); */
+        context.router.push(
+          VerifyOtpRoute(
+              onNext: (_) => showSendAssetStatus(), id: AppPreferences.userId),
+        );
       } else {
         showSendAssetStatus();
       }
@@ -152,6 +149,7 @@ class _SendAssetState extends State<SendAsset> {
             style: bodyText1.copyWith(fontWeight: FontWeight.bold),
           ),
           leading: null,
+          centerTitle: false,
           automaticallyImplyLeading: false,
         ),
         const SizedBox(
@@ -165,13 +163,6 @@ class _SendAssetState extends State<SendAsset> {
                 bodyText2.copyWith(fontSize: 20, fontWeight: FontWeight.w500),
           ),
         ),
-        /*  Container(
-          alignment: Alignment.center,
-          child: Text(
-            '= \$ 5.23',
-            style: bodyText2.copyWith(fontSize: 16),
-          ),
-        ), */
         const SizedBox(
           height: 40,
         ),
@@ -179,12 +170,9 @@ class _SendAssetState extends State<SendAsset> {
             heading: AppLocalizations.of(context)!.asset,
             tailingText:
                 "${widget.assetDatum.coinName} (${widget.assetDatum.coinSymbol})"),
-
         ReceiptDetailsTab(
             heading: AppLocalizations.of(context)!.to,
             tailingText: widget.recipientAddress),
-        // const ReceiptDetailsTab(     heading: 'Network Fee', tailingText: '0.00012 BCH = \$ 0.12'),
-        // const ReceiptDetailsTab( heading: 'Neutron Fee', tailingText: '\$ 0.5'),
         ReceiptDetailsTab(
             heading: AppLocalizations.of(context)!.maxTotal,
             tailingText: '-${widget.amount} ${widget.assetDatum.coinSymbol}'),

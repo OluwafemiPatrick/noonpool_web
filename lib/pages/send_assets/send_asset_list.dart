@@ -9,7 +9,6 @@ import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/error_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'package:focus_detector/focus_detector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SendAssetList extends StatefulWidget {
@@ -42,6 +41,7 @@ class _SendAssetListState extends State<SendAssetList> {
         _isSearch = true;
       });
     });
+    Future.delayed(Duration.zero, fetchUserAssets);
   }
 
   @override
@@ -78,70 +78,63 @@ class _SendAssetListState extends State<SendAssetList> {
     final bodyText1 = textTheme.bodyText1;
     final coinDatas = searchAsset.data ?? [];
 
-    return FocusDetector(
-      onFocusGained: () {
-        fetchUserAssets();
-      },
-      child: Container(
-        color: Colors.white,
-        child: _isLoading
-            ? buildProgressBar()
-            : _hasError
-                ? CustomErrorWidget(
-                    error: AppLocalizations.of(context)!
-                        .anErrorOccurredWithTheDataFetchPleaseTryAgain,
-                    onRefresh: () {
-                      fetchUserAssets();
-                    })
-                : Column(
-                    children: [
-                      AppBar(
-                        elevation: 0,
-                        backgroundColor: Colors.transparent,
-                        title: Text(
-                          AppLocalizations.of(context)!.send,
-                          style:
-                              bodyText1?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        leading: null,
-                        automaticallyImplyLeading: false,
+    return Container(
+      color: Colors.white,
+      child: _isLoading
+          ? buildProgressBar()
+          : _hasError
+              ? CustomErrorWidget(
+                  error: AppLocalizations.of(context)!
+                      .anErrorOccurredWithTheDataFetchPleaseTryAgain,
+                  onRefresh: () {
+                    fetchUserAssets();
+                  })
+              : Column(
+                  children: [
+                    AppBar(
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                      title: Text(
+                        AppLocalizations.of(context)!.send,
+                        style: bodyText1?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      if (coinDatas.isNotEmpty || _isSearch) buildSearchBar(),
-                      Expanded(
-                        child: coinDatas.isEmpty
-                            ? buildEmptyItem()
-                            : ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                padding: const EdgeInsets.all(0),
-                                itemBuilder: (ctx, index) => SendAssetListItem(
-                                  walletDatum: coinDatas[index],
-                                  onPressed: (model) {
-                                    final acceptedCoins = [
-                                      'btc',
-                                      'ltc',
-                                      'doge',
-                                      'bch'
-                                    ];
-                                    if (acceptedCoins.contains(
-                                        model.coinSymbol?.toLowerCase())) {
-                                      context.router.push(
-                                          SendInputScreen(walletDatum: model));
-                                     
-                                    } else {
-                                      MyApp.scaffoldMessengerKey.currentState
-                                          ?.showSnackBar(SnackBar(
-                                              content: Text(
-                                                  "${model.coinName} ${AppLocalizations.of(context)!.isCurrentlyUnavailaleWeWouldNotifyYouOnceItIsAvailiable}")));
-                                    }
-                                  },
-                                ),
-                                itemCount: coinDatas.length,
+                      leading: null,
+                      centerTitle: false,
+                      automaticallyImplyLeading: false,
+                    ),
+                    if (coinDatas.isNotEmpty || _isSearch) buildSearchBar(),
+                    Expanded(
+                      child: coinDatas.isEmpty
+                          ? buildEmptyItem()
+                          : ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.all(0),
+                              itemBuilder: (ctx, index) => SendAssetListItem(
+                                walletDatum: coinDatas[index],
+                                onPressed: (model) {
+                                  final acceptedCoins = [
+                                    'btc',
+                                    'ltc',
+                                    'doge',
+                                    'bch'
+                                  ];
+                                  if (acceptedCoins.contains(
+                                      model.coinSymbol?.toLowerCase())) {
+                                    context.router.push(
+                                        SendInputScreen(walletDatum: model));
+                                  } else {
+                                    MyApp.scaffoldMessengerKey.currentState
+                                        ?.showSnackBar(SnackBar(
+                                            content: Text(
+                                                "${model.coinName} ${AppLocalizations.of(context)!.isCurrentlyUnavailaleWeWouldNotifyYouOnceItIsAvailiable}")));
+                                  }
+                                },
                               ),
-                      ),
-                    ],
-                  ),
-      ),
+                              itemCount: coinDatas.length,
+                            ),
+                    ),
+                  ],
+                ),
     );
   }
 
@@ -209,8 +202,7 @@ class _SendAssetListState extends State<SendAssetList> {
 
   Widget buildProgressBar() {
     return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(0),
       itemBuilder: (ctx, index) => SendAssetListItem(
         walletDatum: WalletDatum(),

@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'package:auto_route/auto_route.dart';
-import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
 import 'package:noonpool_web/routing/app_router.gr.dart';
 import 'package:noonpool_web/widgets/outlined_button.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:noonpool_web/routing/app_router.gr.dart' as route;
 
 class SendInputScreen extends StatefulWidget {
   final WalletDatum walletDatum;
@@ -87,9 +84,10 @@ class _SendInputScreenState extends State<SendInputScreen> {
             backgroundColor: Colors.transparent,
             title: Text(
               '${AppLocalizations.of(context)!.send} ${widget.walletDatum.coinSymbol}',
-              style: bodyText1,
+              style: bodyText1.copyWith(fontWeight: FontWeight.bold),
             ),
             leading: null,
+            centerTitle: false,
             automaticallyImplyLeading: false,
           ),
           const SizedBox(
@@ -173,28 +171,6 @@ class _SendInputScreenState extends State<SendInputScreen> {
         controller: _recipientAddressController,
         decoration: InputDecoration(
           labelText: AppLocalizations.of(context)!.recipientAdddress,
-          suffixIcon: IconButton(
-            icon: const Icon(
-              Icons.qr_code_scanner_rounded,
-              color: Colors.black,
-            ),
-            onPressed: () async {
-              try {
-                final barcodeScanRes =
-                    await context.router.push<String>(const route.QrScanner());
-
-                if (barcodeScanRes != null && barcodeScanRes.isNotEmpty) {
-                  _recipientAddressController.text = barcodeScanRes;
-                }
-              } catch (exception) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(exception.toString()),
-                  ),
-                );
-              }
-            },
-          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -219,76 +195,5 @@ class _SendInputScreenState extends State<SendInputScreen> {
         },
       ),
     ];
-  }
-}
-
-class QrScanner extends StatefulWidget {
-  const QrScanner({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<QrScanner> createState() => _QrScannerState();
-}
-
-class _QrScannerState extends State<QrScanner> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
-  QRViewController? controller;
-
-/*   @override
-  void reassemble() {
-    super.reassemble();
-    if (Platform.isAndroid) {
-      controller!.pauseCamera();
-    } else if (Platform.isIOS) {
-      controller!.resumeCamera();
-    }
-  }
- */
-  @override
-  Widget build(BuildContext context) {
-    final scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 300.0
-        : 500.0;
-    return Scaffold(
-      body: QRView(
-        key: qrKey,
-        onQRViewCreated: _onQRViewCreated,
-        overlay: QrScannerOverlayShape(
-            borderColor: kPrimaryColor,
-            borderRadius: 10,
-            borderLength: 30,
-            borderWidth: 10,
-            cutOutSize: scanArea),
-        onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
-      ),
-    );
-  }
-
-  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    if (!p) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(AppLocalizations.of(context)!.permissionsNotGranted)),
-      );
-    }
-  }
-
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-
-    late StreamSubscription<Barcode> subscription;
-    subscription = controller.scannedDataStream.listen((scanData) {
-      context.router.pop<String>(scanData.code ?? '');
-      subscription.cancel();
-    });
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
   }
 }

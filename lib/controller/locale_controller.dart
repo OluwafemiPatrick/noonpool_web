@@ -4,14 +4,19 @@ import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LocaleController extends GetxController {
-  Rx<Locale?> locale = null.obs;
+  Rx<Locale> locale =
+      const Locale(AppPreferences.defaultLocaleLanguageCode).obs;
 
   updateCurrentLocale(Locale? locale) {
-    AppPreferences.setLocaleLanguageCode(
-      localeLanguageCode:
-          locale?.languageCode ?? AppPreferences.defaultLocaleLanguageCode,
-    );
-    this.locale.value = locale;
+    if (locale != null && locale.languageCode.trim().isNotEmpty) {
+      AppPreferences.setLocaleLanguageCode(
+        localeLanguageCode: locale.languageCode,
+      );
+      this.locale.value = locale;
+    } else {
+      this.locale.value =
+          const Locale(AppPreferences.defaultLocaleLanguageCode);
+    }
   }
 }
 
@@ -19,7 +24,7 @@ class AppLocale {
   final String rawName;
   final int index;
   final String translatedName;
-  final Locale? locale;
+  final Locale locale;
 
   AppLocale({
     required this.rawName,
@@ -34,7 +39,7 @@ List<AppLocale> appLocales(BuildContext context) => [
         rawName: "System Default",
         index: 0,
         translatedName: '(${AppLocalizations.of(context)!.systemDefault})',
-        locale: null,
+        locale: const Locale(AppPreferences.defaultLocaleLanguageCode),
       ),
       AppLocale(
         rawName: "English",
