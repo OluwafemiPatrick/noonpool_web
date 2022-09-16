@@ -20,6 +20,16 @@ class ChangePasswordConfirmationPage extends StatefulWidget {
 class _ChangePasswordConfirmationPageState
     extends State<ChangePasswordConfirmationPage> {
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      AppPreferences.setLoginStatus(status: false);
+      Get.find<AppBarController>()
+          .updateLoginStatus(AppPreferences.loginStatus);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final bodyText2 = textTheme.bodyText2;
@@ -50,9 +60,6 @@ class _ChangePasswordConfirmationPageState
           const Spacer(),
           CustomElevatedButton(
             onPressed: () {
-              AppPreferences.setLoginStatus(status: false);
-                       Get.find<AppBarController>()
-                      .updateLoginStatus(AppPreferences.loginStatus);
               context.router.pushAll([const LoginRoute()]);
             },
             widget: Text(
