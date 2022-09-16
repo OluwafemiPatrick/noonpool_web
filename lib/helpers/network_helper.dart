@@ -436,10 +436,9 @@ Future<RecieveData> walletData({
 }) async {
   final userId = AppPreferences.userId;
   try {
-    debugPrint("${baseUrl}wallet?id=$userId&network=${walletDatum.coinSymbol}");
     final response = await http.get(
       Uri.parse(
-          "${baseUrl}wallet?id=$userId&network=${walletDatum.coinSymbol}"),
+          "${baseUrl}wallet/recieve?id=$userId&network=${walletDatum.coinSymbol}"),
       headers: {
         'Content-Type': 'application/json',
       },
