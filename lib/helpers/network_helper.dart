@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/models/coin_model/coin_model.dart';
@@ -55,10 +53,8 @@ Future<WorkerData> fetchWorkerData(String pool) async {
           "${baseUrl}pool/getPoolPageData?worker_name=$name&pool=${pool.toLowerCase()}"),
     );
 
-    debugPrint(response.request?.url.toString());
-    debugPrint(response.body.toString());
     final data = jsonDecode(response.body);
-    debugPrint(data.toString());
+
     if (response.statusCode <= 299) {
       return WorkerData.fromMap(data);
     } else {
@@ -79,7 +75,7 @@ Future<void> sendUserOTP({required String email}) async {
       }),
       headers: {'Content-Type': 'application/json'},
     );
-    debugPrint(response.body.toString());
+
     if (response.statusCode == 200) {
       return;
     } else {
@@ -109,7 +105,7 @@ Future<void> set2FAStatus({
       }),
       headers: {'Content-Type': 'application/json'},
     );
-    debugPrint(response.body.toString());
+
     if (response.statusCode == 200) {
       return;
     } else {
@@ -130,8 +126,7 @@ Future<UserSecret> get2FAStatus({required String id}) async {
       Uri.parse("${baseUrl}auth/google_2FA?id=$id"),
       headers: {'Content-Type': 'application/json'},
     );
-    debugPrint(response.request?.url.toString());
-    debugPrint(response.body.toString());
+
     if (response.statusCode == 200) {
       return UserSecret.fromJson(response.body);
     } else {
@@ -158,14 +153,7 @@ Future<void> verifyUserOTP({
       }),
       headers: {'Content-Type': 'application/json'},
     );
-    debugPrint(response.request?.url.toString());
-    debugPrint(jsonEncode({
-      "email": email,
-      "code": code,
-    }).toString());
-    debugPrint(
-      response.body.toString(),
-    );
+ 
     if (response.statusCode == 200) {
       return;
     } else {
@@ -188,9 +176,7 @@ Future<bool> checkUsername(String username) async {
       Uri.parse('${baseUrl}auth/checkUsername?username=$username'),
       headers: {'Content-Type': 'application/json'},
     );
-    debugPrint(response.body.toString());
-    debugPrint(response.statusCode.toString());
-
+ 
     if (response.statusCode == 200) {
       return true;
     }
@@ -253,9 +239,7 @@ Future<LoginDetails> signInToUserAccount({
       }),
       headers: {'Content-Type': 'application/json'},
     );
-    debugPrint(response.request!.url.toString());
-    debugPrint(response.body.toString());
-
+ 
     if (response.statusCode == 200) {
       return LoginDetails.fromJson(response.body);
     } else {
@@ -286,9 +270,7 @@ Future<void> resetPassword({
       },
     );
 
-    debugPrint(
-      response.body.toString(),
-    );
+ 
     if (response.statusCode == 200) {
       return;
     } else {
@@ -313,9 +295,7 @@ Future<WalletData> getWalletData() async {
       Uri.parse("${baseUrl}wallet/wallet_list?user_id=$userId"),
       headers: {'Content-Type': 'application/json'},
     );
-    debugPrint(response.request?.url.toString());
-    debugPrint(response.body.toString());
-
+ 
     if (response.statusCode == 200) {
       return WalletData.fromJson(response.body);
     } else {
@@ -339,8 +319,7 @@ Future<void> getWalletInformation(WalletDatum walletDatum) async {
           "${baseUrl}wallet?id=$userId&network=${walletDatum.coinSymbol}"),
       headers: {'Content-Type': 'application/json'},
     );
-    debugPrint(response.request?.url.toString());
-    debugPrint(response.body.toString());
+ 
 
     if (response.statusCode == 200) {
       return;
@@ -369,20 +348,11 @@ Future<WalletTransactions> getSummaryTransactions({
           "${baseUrl}wallet/getTransactionList?id=$userId&coin=$coin&last_trx_id=$lastHash&page=$page"),
       headers: {'Content-Type': 'application/json'},
     );
-    debugPrint(response.request?.url.toString());
-    debugPrint(response.body.toString());
+ 
     final decode = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      /*  final data =
-          '''{"trxs":[{"hash":"0f56b189a12f4bba5f43be0427dc3c3e08dd7f5c49837b061d15979db4037d91","isSend":false, "network":"bitcoin-cash"},
-	{"hash":"f6b9bdbfa064a85f01fa812b962063f919bd7be6950cdb7a5aeace5cf72aae41","isSend":false, "network":"bitcoin-cash"},
-	{"hash":"b0054876934e4800ce0f64970dfa78daff4b5312f726823200617da8e3dfb72a","isSend":true, "network":"bitcoin-cash"},
-	{"hash":"232faf9be7871fcb451db4971ccce884d997f3efe9d15b143827d515e1e2255b","isSend":true, "network":"bitcoin-cash"},
-	{"hash":"dce7a49750b9b981dcdba0a7b2d261c2695fdf85cf1350e5c351d7e4b89ee643","isSend":false, "network":"bitcoin-cash"}]}'''; */
-      /*  return WalletTransactions.fromMap(
-        jsonDecode(data),
-      ); */
+ 
       return WalletTransactions.fromMap(decode);
     } else {
       return Future.error(decode['message'] ?? '');
@@ -391,7 +361,7 @@ Future<WalletTransactions> getSummaryTransactions({
     return Future.error(
         'There is either no or a very weak network connection.');
   } catch (exception) {
-    debugPrint(exception.toString());
+ 
     return Future.error('An error occurred while getting data');
   }
 }
@@ -415,8 +385,7 @@ sendFromWallet({
       body: jsonEncode(body),
       headers: {'Content-Type': 'application/json'},
     );
-    debugPrint(response.request?.url.toString());
-    debugPrint(response.body.toString());
+ 
     final decode = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
@@ -444,8 +413,7 @@ Future<RecieveData> walletData({
         'Content-Type': 'application/json',
       },
     );
-    debugPrint(response.request?.url.toString());
-    debugPrint(response.body.toString());
+ 
     final decode = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
@@ -457,9 +425,7 @@ Future<RecieveData> walletData({
     return Future.error(
         'There is either no or a very weak network connection.');
   } catch (exception) {
-    debugPrint(exception.toString());
-
-    return Future.error(exception.toString());
-    // return Future.error('An error occurred while getting data');
+  
+  return Future.error('An error occurred while getting data');
   }
 }

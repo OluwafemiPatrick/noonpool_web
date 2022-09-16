@@ -43,7 +43,6 @@ class _WalletPageState extends State<_WalletPage> {
   }
 
   getData() async {
-    debugPrint(AppPreferences.userId);
     setState(() {
       _isLoading = true;
       _hasError = false;
