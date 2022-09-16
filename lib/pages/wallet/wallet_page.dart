@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
-import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/main.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
 import 'package:noonpool_web/models/wallet_data/wallet_data.dart';
