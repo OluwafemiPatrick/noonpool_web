@@ -616,6 +616,7 @@ class AppBarHelper {
 
     showGeneralDialog(
       context: context,
+         useRootNavigator: false,
       barrierLabel: "Request Processing",
       barrierDismissible: false,
       barrierColor: Colors.black.withOpacity(0.5),
@@ -634,6 +635,7 @@ class AppBarHelper {
     final bodyText2 = textTheme.bodyText2!.copyWith(fontSize: 16);
     showDialog(
         context: context,
+           useRootNavigator: false,
         builder: (ctx) {
           return AlertDialog(
             shape: const RoundedRectangleBorder(

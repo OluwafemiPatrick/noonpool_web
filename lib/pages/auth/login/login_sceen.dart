@@ -162,6 +162,7 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       barrierLabel: "Verification Dialog",
       barrierDismissible: true,
+      useRootNavigator: false,
       barrierColor: Colors.black.withOpacity(0.5),
       transitionDuration: const Duration(milliseconds: 500),
       pageBuilder: (_, __, ___) => dialog,
@@ -212,6 +213,7 @@ class _LoginPageState extends State<LoginPage> {
     );
     showGeneralDialog(
       context: context,
+      useRootNavigator: false,
       barrierLabel: "Resend Verification",
       barrierDismissible: false,
       barrierColor: Colors.black.withOpacity(0.5),

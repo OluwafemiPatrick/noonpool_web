@@ -155,6 +155,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
     showGeneralDialog(
       context: context,
+      useRootNavigator: false,
       barrierLabel: "Error",
       barrierDismissible: true,
       barrierColor: Colors.black.withOpacity(0.5),
@@ -271,6 +272,7 @@ class _RegisterPageState extends State<RegisterPage> {
             onPressed: () {
               showDialog(
                   context: context,
+                  useRootNavigator: false,
                   builder: (_) {
                     return AlertDialog(
                       contentPadding: const EdgeInsets.all(kDefaultPadding / 2),

@@ -119,6 +119,7 @@ class _RegistrationConfirmationScreenState
     showGeneralDialog(
       context: context,
       barrierLabel: "Resend Verification",
+         useRootNavigator: false,
       barrierDismissible: true,
       barrierColor: Colors.black.withOpacity(0.5),
       transitionDuration: const Duration(milliseconds: 500),

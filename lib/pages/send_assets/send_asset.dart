@@ -84,6 +84,7 @@ class _SendAssetState extends State<SendAsset> {
   Future<bool?> confirmTransaction() async {
     return showDialog<bool>(
       context: context,
+      useRootNavigator: false,
       barrierDismissible: false, // user must tap button for close dialog!
       builder: (BuildContext context) {
         return AlertDialog(
@@ -112,6 +113,7 @@ class _SendAssetState extends State<SendAsset> {
   showMessage(String message) async {
     return showDialog(
       context: context,
+         useRootNavigator: false,
       barrierDismissible: false, // user must tap button for close dialog!
       builder: (BuildContext context) {
         return AlertDialog(

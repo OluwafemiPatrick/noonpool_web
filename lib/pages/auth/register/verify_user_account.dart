@@ -226,6 +226,7 @@ class _VerifyUserAccountState extends State<VerifyUserAccount> {
       context: context,
       barrierLabel: "Resend Verification",
       barrierDismissible: true,
+      useRootNavigator: false,
       barrierColor: Colors.black.withOpacity(0.5),
       transitionDuration: const Duration(milliseconds: 500),
       pageBuilder: (_, __, ___) => dialog,
