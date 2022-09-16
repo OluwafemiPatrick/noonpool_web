@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     const spacer = SizedBox(
@@ -21,9 +22,16 @@ class _HomePageState extends State<HomePage> {
     );
 
     return Scaffold(
+      key: scaffoldKey,
+      drawer: const Drawer(child: AppDrawer()),
       body: Column(
         children: [
-          const CustomAppBar(),
+          ResponsiveWidget(
+            largeScreen: const AppBarLarge(),
+            smallScreen: AppBarSmall(
+              scaffoldKey: scaffoldKey,
+            ),
+          ),
           const Divider(),
           const SizedBox(
             width: double.infinity,
@@ -33,6 +41,7 @@ class _HomePageState extends State<HomePage> {
             child: SingleChildScrollView(
               child: Center(
                 child: AnimatedContainer(
+                  padding: const EdgeInsets.all(kDefaultPadding / 2),
                   duration: const Duration(milliseconds: 500),
                   alignment: Alignment.center,
                   width: ResponsiveWidget.isMediumScreen(context) ||
@@ -42,7 +51,10 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const HomeHeader(),
+                      const ResponsiveWidget(
+                        largeScreen: HomeHeaderLarge(),
+                        smallScreen: HomeHeaderSmall(),
+                      ),
                       spacer,
                       Container(
                         clipBehavior: Clip.antiAliasWithSaveLayer,

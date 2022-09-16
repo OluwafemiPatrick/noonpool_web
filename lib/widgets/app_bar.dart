@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:auto_route/auto_route.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:noonpool_web/constants/strings.dart';
@@ -11,33 +10,354 @@ import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/main.dart';
 import 'package:noonpool_web/routing/app_router.gr.dart';
+import 'package:noonpool_web/widgets/drop_down_button.dart';
+import 'package:noonpool_web/widgets/outlined_button.dart';
 import 'package:noonpool_web/widgets/svg_image.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CustomAppBar extends StatefulWidget {
-  const CustomAppBar({Key? key}) : super(key: key);
+class AppBarLarge extends StatefulWidget {
+  const AppBarLarge({Key? key}) : super(key: key);
 
   @override
-  State<CustomAppBar> createState() => _CustomAppBarState();
+  State<AppBarLarge> createState() => _AppBarLargeState();
 }
 
-class _CustomAppBarState extends State<CustomAppBar> {
+class _AppBarLargeState extends State<AppBarLarge> with AppBarHelper {
+  @override
+  void updateScreen() {
+    super.updateScreen();
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      context.router.root.addListener(updateListener);
+      context.router.root.addListener(listener);
     });
   }
 
+  listener() => updateListener(context);
+
   @override
   void dispose() {
-    context.router.root.removeListener(updateListener);
+    context.router.root.removeListener(listener);
     super.dispose();
   }
 
-  updateListener() {
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final bodyText1 = textTheme.bodyText2!;
+    return GetX<AppBarController>(builder: (controller) {
+      return Row(
+        children: [
+          const SizedBox(width: kDefaultMargin / 2),
+          Image.asset(
+            'assets/images/logo2.png',
+            width: 80,
+          ),
+          const SizedBox(width: kDefaultMargin / 2),
+          if (!controller.isRefreshing)
+            _appBarButton('Home', bodyText1, () => onNavigateHome(context),
+                isSelected: controller.isItemSelected(0),
+                icon: 'assets/icons/home.svg'),
+          //
+          if (!controller.isRefreshing)
+            _appBarButton('Pool', bodyText1, () => onNavigatePool(context),
+                isSelected: controller.isItemSelected(1),
+                icon: 'assets/icons/pool.svg'),
+          //
+          if (!controller.isRefreshing)
+            _appBarButton(
+                'Calculator', bodyText1, () => onNavigateCalculator(context),
+                isSelected: controller.isItemSelected(2),
+                icon: 'assets/icons/calculator.svg'),
+
+          if (!controller.isRefreshing)
+            _appBarButton('Wallet', bodyText1, () => onNavigateWallet(context),
+                isSelected: controller.isItemSelected(3),
+                icon: 'assets/icons/wallet.svg'),
+          const Spacer(),
+          _appBarButton(
+            'APP',
+            bodyText1,
+            onAppPressed,
+          ),
+          if (!controller.isUserLoggedIn && !controller.isRefreshing)
+            _appBarButton(
+              'Sign In',
+              bodyText1,
+              () => onSIgnInPressed(context),
+            ),
+          if (!controller.isUserLoggedIn && !controller.isRefreshing)
+            _appBarButton(
+              'Sign Up',
+              bodyText1,
+              () => onSIgnUpPressed(context),
+            ),
+          const SizedBox(width: kDefaultMargin / 2),
+          if (controller.isUserLoggedIn && !controller.isRefreshing)
+            profileButton(bodyText1, context),
+          const SizedBox(width: kDefaultMargin / 2),
+          settingsButton(bodyText1, context),
+          const SizedBox(width: kDefaultMargin / 2),
+        ],
+      );
+    });
+  }
+
+  Widget _appBarButton(
+    String text,
+    TextStyle? bodyText2,
+    VoidCallback onPressed, {
+    bool isSelected = false,
+    String? icon,
+  }) =>
+      TextButton(
+        onPressed: onPressed,
+        child: Row(
+          children: [
+            if (icon != null)
+              SvgImage(
+                iconLocation: icon,
+                name: text,
+                color: isSelected ? Colors.red : bodyText2!.color!,
+                size: 14,
+              ),
+            if (icon != null)
+              const SizedBox(
+                width: 3,
+              ),
+            Text(
+              text,
+              style: bodyText2?.copyWith(
+                color: isSelected ? Colors.red : bodyText2.color,
+              ),
+            ),
+          ],
+        ),
+      );
+}
+
+class AppBarSmall extends StatefulWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const AppBarSmall({Key? key, required this.scaffoldKey}) : super(key: key);
+
+  @override
+  State<AppBarSmall> createState() => _AppBarSmallState();
+}
+
+class _AppBarSmallState extends State<AppBarSmall> with AppBarHelper {
+  @override
+  void updateScreen() {
+    super.updateScreen();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      context.router.root.addListener(listener);
+    });
+  }
+
+  listener() => updateListener(context);
+
+  @override
+  void dispose() {
+    context.router.root.removeListener(listener);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final bodyText1 = textTheme.bodyText2!;
+    return GetX<AppBarController>(builder: (controller) {
+      return Row(
+        children: [
+          if (!controller.isRefreshing)
+            const SizedBox(width: kDefaultMargin / 2),
+          if (!controller.isRefreshing)
+            IconButton(
+              onPressed: () {
+                widget.scaffoldKey.currentState?.openDrawer();
+              },
+              icon: const Icon(Icons.menu_rounded),
+            ),
+          const SizedBox(width: kDefaultMargin / 2),
+          Image.asset(
+            'assets/images/logo2.png',
+            width: 80,
+          ),
+          const Spacer(),
+          if (!controller.isUserLoggedIn && !controller.isRefreshing)
+            _appBarButton(
+              'Sign In',
+              bodyText1,
+              () => onSIgnInPressed(context),
+            ),
+          if (!controller.isUserLoggedIn && !controller.isRefreshing)
+            _appBarButton(
+              'Sign Up',
+              bodyText1,
+              () => onSIgnUpPressed(context),
+            ),
+          const SizedBox(width: kDefaultMargin / 2),
+          if (controller.isUserLoggedIn && !controller.isRefreshing)
+            profileButton(bodyText1, context),
+          const SizedBox(width: kDefaultMargin / 2),
+          settingsButton(bodyText1, context),
+          const SizedBox(width: kDefaultMargin / 2),
+        ],
+      );
+    });
+  }
+
+  Widget _appBarButton(
+    String text,
+    TextStyle? bodyText2,
+    VoidCallback onPressed, {
+    bool isSelected = false,
+    String? icon,
+  }) =>
+      TextButton(
+        onPressed: onPressed,
+        child: Row(
+          children: [
+            if (icon != null)
+              SvgImage(
+                iconLocation: icon,
+                name: text,
+                color: isSelected ? Colors.red : bodyText2!.color!,
+                size: 14,
+              ),
+            if (icon != null)
+              const SizedBox(
+                width: 3,
+              ),
+            Text(
+              text,
+              style: bodyText2?.copyWith(
+                color: isSelected ? Colors.red : bodyText2.color,
+              ),
+            ),
+          ],
+        ),
+      );
+}
+
+class AppDrawer extends StatelessWidget with AppBarHelper {
+  const AppDrawer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final bodyText1 = textTheme.bodyText2!;
+    return GetX<AppBarController>(builder: (controller) {
+      return Container(
+        padding: const EdgeInsets.all(kDefaultMargin / 2),
+        child: Column(children: [
+          Image.asset(
+            'assets/images/logo2.png',
+            width: 150,
+          ),
+          const SizedBox(width: kDefaultMargin / 4),
+          const Divider(),
+          const SizedBox(width: kDefaultMargin / 4),
+          if (!controller.isRefreshing)
+            _appBarButton('Home', bodyText1, () {
+              onNavigateHome(context);
+              Navigator.of(context).pop();
+            },
+                isSelected: controller.isItemSelected(0),
+                icon: 'assets/icons/home.svg'),
+          //
+          if (!controller.isRefreshing)
+            _appBarButton('Pool', bodyText1, () {
+              onNavigatePool(context);
+
+              Navigator.of(context).pop();
+            },
+                isSelected: controller.isItemSelected(1),
+                icon: 'assets/icons/pool.svg'),
+          //
+          if (!controller.isRefreshing)
+            _appBarButton('Calculator', bodyText1, () {
+              onNavigateCalculator(context);
+              Navigator.of(context).pop();
+            },
+                isSelected: controller.isItemSelected(2),
+                icon: 'assets/icons/calculator.svg'),
+
+          if (!controller.isRefreshing)
+            _appBarButton('Wallet', bodyText1, () {
+              onNavigateWallet(context);
+              Navigator.of(context).pop();
+            },
+                isSelected: controller.isItemSelected(3),
+                icon: 'assets/icons/wallet.svg'),
+          const Spacer(),
+          CustomOutlinedButton(
+              onPressed: onAppPressed,
+              widget: const Text('Download Application')),
+        ]),
+      );
+    });
+  }
+
+  Widget _appBarButton(
+    String text,
+    TextStyle? bodyText2,
+    VoidCallback onPressed, {
+    bool isSelected = false,
+    String? icon,
+  }) =>
+      Container(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        margin: const EdgeInsets.only(bottom: kDefaultMargin / 4),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: isSelected ? Colors.red.withOpacity(.1) : Colors.transparent,
+        ),
+        child: InkWell(
+          splashColor: Colors.transparent,
+          onTap: onPressed,
+          child: Container(
+            padding: const EdgeInsets.all(kDefaultPadding / 2),
+            child: Row(
+              children: [
+                if (icon != null)
+                  SvgImage(
+                    iconLocation: icon,
+                    name: text,
+                    color: isSelected ? Colors.red : bodyText2!.color!,
+                    size: 14,
+                  ),
+                if (icon != null)
+                  const SizedBox(
+                    width: 3,
+                  ),
+                Text(
+                  text,
+                  style: bodyText2?.copyWith(
+                    color: isSelected ? Colors.red : bodyText2.color,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+}
+
+class AppBarHelper {
+  void updateScreen() {}
+
+  updateListener(BuildContext context) {
     final controller = Get.find<AppBarController>();
     final name = context.router.topPage?.name?.trim();
     switch (name) {
@@ -60,112 +380,34 @@ class _CustomAppBarState extends State<CustomAppBar> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final bodyText1 = textTheme.bodyText2!;
-    return GetX<AppBarController>(builder: (controller) {
-      return Row(
-        children: [
-          const SizedBox(width: 10),
-
-          Image.asset(
-            'assets/images/logo2.png',
-            width: 80,
-          ),
-          const SizedBox(width: 10),
-          if (!controller.isRefreshing)
-            _button2('Home', bodyText1, () {
-              context.router.push(const HomeBody());
-            },
-                isSelected: controller.isItemSelected(0),
-                icon: 'assets/icons/home.svg'),
-          //
-          if (!controller.isRefreshing)
-            _button2('Pool', bodyText1, () {
-              context.router.push(const PoolRoute());
-            },
-                isSelected: controller.isItemSelected(1),
-                icon: 'assets/icons/pool.svg'),
-          //
-          if (!controller.isRefreshing)
-            _button2('Calculator', bodyText1, () {
-              context.router.push(const CalculatorRoute());
-            },
-                isSelected: controller.isItemSelected(2),
-                icon: 'assets/icons/calculator.svg'),
-
-          if (!controller.isRefreshing)
-            _button2('Wallet', bodyText1, () {
-              context.router.push(const WalletRoute());
-            },
-                isSelected: controller.isItemSelected(3),
-                icon: 'assets/icons/wallet.svg'),
-          const Spacer(),
-          _button2(
-            'APP',
-            bodyText1,
-            () {},
-          ),
-          if (!controller.isUserLoggedIn && !controller.isRefreshing)
-            _button2(
-              'Sign In',
-              bodyText1,
-              () {
-                context.router.navigate(const LoginRoute());
-              },
-            ),
-          if (!controller.isUserLoggedIn && !controller.isRefreshing)
-            _button2(
-              'Sign Up',
-              bodyText1,
-              () {
-                context.router.navigate(const RegisterRoute());
-              },
-            ),
-          const SizedBox(width: 10),
-          if (controller.isUserLoggedIn && !controller.isRefreshing)
-            profile(bodyText1),
-          const SizedBox(width: 10),
-          moreSettings(bodyText1, context),
-          const SizedBox(width: 10),
-        ],
-      );
-    });
+  onNavigateHome(BuildContext context) {
+    context.router.push(const HomeBody());
   }
 
-  Widget _button2(
-    String text,
-    TextStyle? bodyText2,
-    VoidCallback onPressed, {
-    bool isSelected = false,
-    String? icon,
-  }) =>
-      TextButton(
-          onPressed: onPressed,
-          child: Row(
-            children: [
-              if (icon != null)
-                SvgImage(
-                  iconLocation: icon,
-                  name: text,
-                  color: isSelected ? Colors.red : bodyText2!.color!,
-                  size: 14,
-                ),
-              if (icon != null)
-                const SizedBox(
-                  width: 3,
-                ),
-              Text(
-                text,
-                style: bodyText2?.copyWith(
-                  color: isSelected ? Colors.red : bodyText2.color,
-                ),
-              ),
-            ],
-          ));
+  onNavigatePool(BuildContext context) {
+    context.router.push(const PoolRoute());
+  }
 
-  Widget profile(TextStyle? bodyText2) => DropDownWidget(
+  onNavigateCalculator(BuildContext context) {
+    context.router.push(const CalculatorRoute());
+  }
+
+  onNavigateWallet(BuildContext context) {
+    context.router.push(const WalletRoute());
+  }
+
+  onAppPressed() {}
+
+  onSIgnInPressed(BuildContext context) {
+    context.router.navigate(const LoginRoute());
+  }
+
+  onSIgnUpPressed(BuildContext context) {
+    context.router.navigate(const RegisterRoute());
+  }
+
+  Widget profileButton(TextStyle? bodyText2, BuildContext context) =>
+      DropDownWidget(
           items: [
             AppLocalizations.of(context)!.twoFactorAuthentication,
             AppLocalizations.of(context)!.changePassword,
@@ -174,11 +416,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
           selectedPosition: -1,
           onUpdate: (value) {
             if (value == 0) {
-              update2faSecurity();
+              update2faSecurity(context);
             } else if (value == 1) {
               context.router.push(const ChangePasswordRoute());
             } else if (value == 2) {
-              showLogoutDialog();
+              showLogoutDialog(context);
             }
           },
           parent: Row(
@@ -243,7 +485,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         .join('&');
   }
 
-  Widget moreSettings(TextStyle? bodyText2, BuildContext context) =>
+  Widget settingsButton(TextStyle? bodyText2, BuildContext context) =>
       DropDownWidget(
           items: [
             AppLocalizations.of(context)!.helpCenter,
@@ -276,17 +518,17 @@ class _CustomAppBarState extends State<CustomAppBar> {
             );
           });
 
-  void update2faSecurity() async {
+  void update2faSecurity(BuildContext context) async {
     final newValue = !AppPreferences.get2faSecurityEnabled;
     if (newValue) {
       await context.router.push(const OtpRoute());
 
-      setState(() {});
+      updateScreen();
     } else {
       await context.router.push(VerifyOtpRoute(
         id: AppPreferences.userId,
         onNext: (secret) async {
-          showLoadingData();
+          showLoadingData(context);
 
           try {
             await set2FAStatus(
@@ -309,9 +551,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ),
             );
           }
-          setState(() {
-            AppPreferences.set2faSecurityStatus(isEnabled: false);
-          });
+          AppPreferences.set2faSecurityStatus(isEnabled: false);
+          updateScreen();
 
           MyApp.scaffoldMessengerKey.currentState?.showSnackBar(
             SnackBar(
@@ -321,11 +562,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
         },
       ));
 
-      setState(() {});
+      updateScreen();
     }
   }
 
-  showLoadingData() async {
+  showLoadingData(BuildContext context) async {
     final textTheme = Theme.of(context).textTheme;
     final bodyText1 = textTheme.bodyText1!;
     final bodyText2 = textTheme.bodyText2!;
@@ -387,7 +628,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     );
   }
 
-  void showLogoutDialog() {
+  void showLogoutDialog(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     final bodyText1 = textTheme.bodyText1!.copyWith(fontSize: 20);
     final bodyText2 = textTheme.bodyText2!.copyWith(fontSize: 16);
@@ -436,54 +677,5 @@ class _CustomAppBarState extends State<CustomAppBar> {
             ],
           );
         });
-  }
-}
-
-class DropDownWidget extends StatelessWidget {
-  final List<String> items;
-  final int selectedPosition;
-  final Function(int) onUpdate;
-  final Widget parent;
-  final Widget Function(String) childBuilder;
-  const DropDownWidget({
-    Key? key,
-    required this.items,
-    required this.selectedPosition,
-    required this.onUpdate,
-    required this.parent,
-    required this.childBuilder,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButtonHideUnderline(
-      child: DropdownButton2(
-        customButton: parent,
-        items: items
-            .map((item) => DropdownMenuItem<String>(
-                value: item, child: childBuilder(item)))
-            .toList(),
-        value: selectedPosition < 0 ? null : items[selectedPosition],
-        onChanged: (value) {
-          if (value != null) {
-            onUpdate(items.indexOf(value.toString()));
-          }
-        },
-        itemPadding: const EdgeInsets.only(
-            left: kDefaultPadding / 2, right: kDefaultPadding / 2),
-        dropdownMaxHeight: 200,
-        dropdownWidth: 200,
-        dropdownPadding: null,
-        dropdownDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(kDefaultPadding / 2),
-          color: Colors.white,
-        ),
-        dropdownElevation: 8,
-        scrollbarRadius: const Radius.circular(40),
-        scrollbarThickness: 6,
-        scrollbarAlwaysShow: true,
-        offset: const Offset(-20, 0),
-      ),
-    );
   }
 }
