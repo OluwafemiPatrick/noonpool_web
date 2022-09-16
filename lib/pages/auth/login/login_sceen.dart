@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
           );
           Get.find<AppBarController>()
               .updateLoginStatus(AppPreferences.loginStatus);
-          context.router.pushAll([const HomeBody()]);
+          context.router.pushAll([const Update2FA()]);
         }
 
         if (loginDetails.userDetails!.g2FAEnabled == true) {

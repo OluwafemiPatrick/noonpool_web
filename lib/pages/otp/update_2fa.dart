@@ -55,6 +55,7 @@ class _Update2FAState extends State<Update2FA> {
             Get.find<AppBarController>()
                 .updateLoginStatus(AppPreferences.loginStatus);
             Get.find<AppBarController>().updateIsRefreshing(false);
+
             context.router.replaceAll(const [HomeBody(), LoginRoute()]);
           }
         } else {

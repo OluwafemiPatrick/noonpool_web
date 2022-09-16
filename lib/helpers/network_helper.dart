@@ -130,6 +130,7 @@ Future<UserSecret> get2FAStatus({required String id}) async {
       Uri.parse("${baseUrl}auth/google_2FA?id=$id"),
       headers: {'Content-Type': 'application/json'},
     );
+    debugPrint(response.request?.url.toString());
     debugPrint(response.body.toString());
     if (response.statusCode == 200) {
       return UserSecret.fromJson(response.body);
