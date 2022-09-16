@@ -42,11 +42,21 @@ class _Update2FAState extends State<Update2FA> {
       });
       try {
         UserSecret userSecret = await get2FAStatus(id: AppPreferences.userId);
-        if (userSecret.isSecret != null) {
-          AppPreferences.set2faSecurityStatus(isEnabled: userSecret.isSecret!);
-          _hasError = false;
-          Get.find<AppBarController>().updateIsRefreshing(false);
-          context.router.replace(const HomeBody());
+        if (userSecret.isSecret != null && userSecret.loginKey != null) {
+          if (userSecret.loginKey == AppPreferences.currentLoginKey) {
+            AppPreferences.set2faSecurityStatus(
+                isEnabled: userSecret.isSecret!);
+            _hasError = false;
+            Get.find<AppBarController>().updateIsRefreshing(false);
+            context.router.replace(const HomeBody());
+          } else {
+            AppPreferences.setLoginStatus(status: false);
+            _hasError = false;
+            Get.find<AppBarController>()
+                .updateLoginStatus(AppPreferences.loginStatus);
+            Get.find<AppBarController>().updateIsRefreshing(false);
+            context.router.replaceAll(const [HomeBody(), LoginRoute()]);
+          }
         } else {
           _hasError = true;
           throw AppLocalizations.of(context)!

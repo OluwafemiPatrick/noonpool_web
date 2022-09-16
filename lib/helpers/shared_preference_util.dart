@@ -20,6 +20,7 @@ class AppPreferences {
   static const defaultLocaleLanguageCode = '---';
   static const _idKey = 'id';
   static const _emailKey = 'email';
+  static const _currentLoginKey = 'currentLogin';
 
   static Future setOnBoardingStatus({required bool status}) async {
     await _preference?.setBool(_onBoardingKey, status);
@@ -41,8 +42,10 @@ class AppPreferences {
     );
   }
 
-  static Future setIdAndEmail(
-      {required String id, required String email}) async {
+  static Future setUserLoginData(
+      {required String id,
+      required String email,
+      required String currentLoginKey}) async {
     await _preference?.setString(
       _idKey,
       id,
@@ -51,13 +54,18 @@ class AppPreferences {
       _emailKey,
       email,
     );
+    await _preference?.setString(
+      _currentLoginKey,
+      currentLoginKey,
+    );
   }
 
   static Future setLoginStatus({required bool status}) async {
     await _preference?.setBool(_loginInKey, status);
     if (!status) {
       await setUserName(username: '');
-      await setIdAndEmail(id: "", email: '');
+      await setUserLoginData(id: "", email: '', currentLoginKey: '');
+      await set2faSecurityStatus(isEnabled: false);
     }
   }
 
@@ -68,6 +76,8 @@ class AppPreferences {
 
   static bool get loginStatus => _preference?.getBool(_loginInKey) ?? false;
   static String get userId => _preference?.getString(_idKey) ?? '';
+  static String get currentLoginKey =>
+      _preference?.getString(_currentLoginKey) ?? '';
   static String get userEmail => _preference?.getString(_emailKey) ?? '';
   static String get currentLocaleLanguageCode =>
       _preference?.getString(_localeLanguageCodeKey) ??
