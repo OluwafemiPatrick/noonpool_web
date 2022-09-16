@@ -17,34 +17,32 @@ class HomeHeaderItem extends StatelessWidget {
       fontSize: 16,
       fontWeight: FontWeight.w500,
     );
-    return Expanded(
-      child: Container(
-        width: double.infinity,
-        margin: const EdgeInsets.only(left: 5, right: 5),
-        height: double.infinity,
-        padding: const EdgeInsets.all(kDefaultMargin / 2),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10), color: kBackgroundColor2),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              child: Text(
-                title,
-                style: bodyText2,
-              ),
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(left: 5, right: 5),
+      height: double.infinity,
+      padding: const EdgeInsets.all(kDefaultMargin / 2),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: kBackgroundColor2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: bodyText2,
             ),
-            const SizedBox(
-              width: kDefaultMargin / 4,
-            ),
-            SvgPicture.asset(
-              imageLocation,
-              width: 150,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            width: kDefaultMargin / 4,
+          ),
+          SvgPicture.asset(
+            imageLocation,
+            width: 150,
+          ),
+        ],
       ),
     );
   }

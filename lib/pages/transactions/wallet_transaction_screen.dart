@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:noonpool_web/constants/strings.dart';
 import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/main.dart';
@@ -332,18 +333,16 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
                 Row(
                   children: [
                     Text(
-                      '${AppLocalizations.of(context)!.estAmount} (\$)',
-                      style: bodyText2.copyWith(fontSize: 12),
+                      '${widget.walletDatum.balance ?? 0} ${widget.walletDatum.coinSymbol ?? ''}',
+                      style: bodyText1.copyWith(
+                          fontWeight: FontWeight.bold, fontSize: 16.0),
                     ),
                     const SizedBox(
                       width: 5,
                     ),
                     Text(
-                      getBalance().toString(),
-                      style: bodyText1.copyWith(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      '(\$ ${formatNumber((widget.walletDatum.usdPrice ?? 0) + .0)})',
+                      style: bodyText2.copyWith(fontSize: 12),
                     ),
                   ],
                 ),

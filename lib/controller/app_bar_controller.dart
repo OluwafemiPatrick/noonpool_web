@@ -3,7 +3,7 @@ import 'package:noonpool_web/helpers/shared_preference_util.dart';
 
 class AppBarController extends GetxController {
   final RxInt _currentItem = 0.obs;
-  final RxBool _isRefreshing = true.obs;
+  final RxBool _isRefreshing = false.obs;
   final RxBool _loginStatus = AppPreferences.loginStatus.obs;
   updateCurrentItem(int id) {
     _currentItem.value = id;

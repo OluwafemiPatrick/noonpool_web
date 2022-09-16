@@ -75,9 +75,11 @@ class _HomeHeaderLargeState extends State<HomeHeaderLarge> {
             child: Row(
               children: viewPagerData
                   .map(
-                    (data) => HomeHeaderItem(
-                        title: data['title'] ?? '',
-                        imageLocation: data['image'] ?? ''),
+                    (data) => Expanded(
+                      child: HomeHeaderItem(
+                          title: data['title'] ?? '',
+                          imageLocation: data['image'] ?? ''),
+                    ),
                   )
                   .toList(),
             ),

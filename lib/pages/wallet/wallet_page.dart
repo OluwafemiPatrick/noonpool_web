@@ -86,7 +86,7 @@ class _WalletPageState extends State<_WalletPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${AppLocalizations.of(context)!.estAmount} (\$)',
+                        '${AppLocalizations.of(context)!.estAmount} (USD)',
                         style: bodyText2.copyWith(fontSize: 12),
                       ),
                       const SizedBox(height: 5),
