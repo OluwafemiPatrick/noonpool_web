@@ -175,7 +175,7 @@ class _WalletPageState extends State<_WalletPage> {
     double amount = 0;
 
     for (final e in walletDatum) {
-      amount += (e.balance ?? 0);
+      amount += (e.usdPrice ?? 0);
     }
     return amount;
   }

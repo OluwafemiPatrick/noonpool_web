@@ -250,8 +250,9 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
   }
 
   void onTransactionItemPressed(Transaction trxSummary) async {
-    final url =
-        'https://blockchair.com/${widget.walletDatum.coinName?.toLowerCase()}/transaction/${trxSummary.hash}';
+    final name =
+        widget.walletDatum.coinName?.toLowerCase().trim().replaceAll(' ', '-');
+    final url = 'https://blockchair.com/$name/transaction/${trxSummary.hash}';
 
     try {
       await launchUrlString(url);
