@@ -35,9 +35,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
               if (allData.isNotEmpty) {
                 List<String> coinList = [
                   'LTC',
-                  'BTC',
-                  'DOGE',
                   'BCH',
+                  'DOGE',
+                  'BTC',
                 ];
                 final selectedCoinData = <CoinModel>[];
                 for (final element in allData) {
@@ -85,6 +85,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
       ),
     );
   }
+
 }
 
 class _CalculatorTabBody extends StatefulWidget {
@@ -126,7 +127,12 @@ class _CalculatorTabBodyState extends State<_CalculatorTabBody> {
     _formKey.currentState?.save();
 
     final hashRate = double.tryParse(_initValues[_validHashRate]) ?? .0;
-    const mswMultiplier = 1000000000000;
+    int mswMultiplier = 1000000000000;
+
+    var coinSym = widget.selectedCoins[selectedCoinIndex].coinSymbol;
+    if (coinSym == 'LTC' || coinSym == 'DOGE'){
+      mswMultiplier = 1000000;
+    }
 
     final firstCal = hashRate *
         (widget.selectedCoins[selectedCoinIndex].reward ?? 0) *
@@ -284,7 +290,8 @@ class _CalculatorTabBodyState extends State<_CalculatorTabBody> {
           ),
         ),
         child: Text(
-          widget.selectedCoins[selectedCoinIndex].difficulty.toString(),
+         // widget.selectedCoins[selectedCoinIndex].difficulty.toString(),
+          "${widget.selectedCoins[selectedCoinIndex].difficulty?.toStringAsFixed(2)}",
           style: bodyText2,
         ),
       ),
@@ -325,6 +332,11 @@ class _CalculatorTabBodyState extends State<_CalculatorTabBody> {
   }
 
   List<Widget> buildValidHashRate(TextStyle bodyText2) {
+    String hash = 'TH/s';
+    var coinSym = widget.selectedCoins[selectedCoinIndex].coinSymbol;
+    if (coinSym == 'LTC' || coinSym == 'DOGE'){
+      hash = 'MH/s';
+    }
     return [
       Padding(
         padding:
@@ -351,7 +363,7 @@ class _CalculatorTabBodyState extends State<_CalculatorTabBody> {
               width: double.minPositive,
               margin: const EdgeInsets.only(right: kDefaultMargin / 2),
               child: Text(
-                'TH/s',
+                hash,
                 style: bodyText2.copyWith(color: kPrimaryColor),
               ),
             ),
