@@ -250,17 +250,13 @@ class _WalletTransactionsPageState extends State<WalletTransactionsPage> {
   }
 
   void onTransactionItemPressed(Transaction trxSummary) async {
-    final name =
-        widget.walletDatum.coinName?.toLowerCase().trim().replaceAll(' ', '-');
-    final url = 'https://blockchair.com/$name/transaction/${trxSummary.hash}';
-
     try {
-      await launchUrlString(url);
+      await launchUrlString(trxSummary.url ?? '');
     } catch (exception) {
       MyApp.scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
           content: Text(AppLocalizations.of(context)!.errorOnCopyIngUrl)));
       try {
-        await FlutterClipboard.copy(url);
+        await FlutterClipboard.copy(trxSummary.url ?? '');
         () {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

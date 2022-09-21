@@ -6,14 +6,17 @@ import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/models/coin_model/coin_model.dart';
 import 'package:noonpool_web/models/login_details/login_details.dart';
 import 'package:noonpool_web/models/recieve_data/recieve_data.dart';
+import 'package:noonpool_web/models/send_creation_model/send_creation_model.dart';
 import 'package:noonpool_web/models/user_secret.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
 import 'package:noonpool_web/models/wallet_data/wallet_data.dart';
 import 'package:noonpool_web/models/wallet_transactions/wallet_transactions.dart';
 import 'package:noonpool_web/models/worker_data/worker_data.dart';
 
-const String baseUrl = 'http://5.189.137.144:1028/api/v2/';
-// const String baseUrl = 'http://5.189.137.144:3505/api/v2/';
+// main app url
+// const String baseUrl = 'https://npool.noonpool.com/api/v2/';
+// dev url
+const String baseUrl = 'http://5.189.137.144:5000/api/v2/';
 
 Future<List<CoinModel>> getAllCoinDetails() async {
   try {
@@ -362,7 +365,7 @@ Future<WalletTransactions> getSummaryTransactions({
   }
 }
 
-sendFromWallet({
+Future<SendCreationModel> createSendTransaction({
   required String network,
   required String reciever,
   required double amount,
@@ -378,7 +381,41 @@ sendFromWallet({
     };
 
     final response = await http.post(
-      Uri.parse("${baseUrl}wallet/send"),
+      Uri.parse("${baseUrl}wallet/createTransaction"),
+      body: jsonEncode(body),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    final decode = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      return SendCreationModel.fromMap(decode);
+    } else {
+      return Future.error(decode['message'] ?? '');
+    }
+  } on SocketException {
+    return Future.error(
+        'There is either no or a very weak network connection.');
+  } catch (exception) {
+    return Future.error('An error occurred while processing your request');
+  }
+}
+
+sendFromWallet({
+  required SendCreationModel creationModel,
+  required String network,
+}) async {
+  final userId = AppPreferences.userId;
+
+  try {
+    final body = <String, dynamic>{
+      "id": userId,
+      "network": network,
+      "rawTrx": creationModel.message?.rawTrx ?? '',
+    };
+
+    final response = await http.post(
+      Uri.parse("${baseUrl}wallet/pushTransaction"),
       body: jsonEncode(body),
       headers: {'Content-Type': 'application/json'},
     );

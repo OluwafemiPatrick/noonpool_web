@@ -6,6 +6,7 @@ import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
 import 'package:noonpool_web/main.dart';
+import 'package:noonpool_web/models/send_creation_model/send_creation_model.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
 import 'package:noonpool_web/routing/app_router.gr.dart';
 
@@ -34,7 +35,8 @@ class _SendAssetState extends State<SendAsset> {
   bool _isLoading = false;
   bool _isFetchingPrice = true;
   bool _priceFetchHasError = false;
-  double noonPoolFee = 0;
+
+  SendCreationModel sendCreationModel = SendCreationModel();
   @override
   void initState() {
     super.initState();
@@ -48,7 +50,14 @@ class _SendAssetState extends State<SendAsset> {
     });
 
     try {
-      //
+      final reciever = widget.recipientAddress;
+      final network = widget.assetDatum.coinSymbol ?? '';
+      final amount = widget.amount;
+      sendCreationModel = await createSendTransaction(
+        reciever: reciever,
+        amount: amount,
+        network: network,
+      );
       _priceFetchHasError = false;
     } catch (exception) {
       MyApp.scaffoldMessengerKey.currentState?.showSnackBar(
@@ -84,20 +93,16 @@ class _SendAssetState extends State<SendAsset> {
   }
 
   Future showSendAssetStatus() async {
-    final reciever = widget.recipientAddress;
     final network = widget.assetDatum.coinSymbol ?? '';
-    final amount = widget.amount;
 
     setState(() {
       _isLoading = true;
     });
     try {
       await sendFromWallet(
-        reciever: reciever,
-        amount: amount,
+        creationModel: sendCreationModel,
         network: network,
       );
-
       await showMessage(
         AppLocalizations.of(context)!.yourTransactionWasSentSuccessfully,
       );
@@ -235,15 +240,15 @@ class _SendAssetState extends State<SendAsset> {
                 "${widget.assetDatum.coinName} (${widget.assetDatum.coinSymbol})"),
         ReceiptDetailsTab(
             heading: AppLocalizations.of(context)!.to,
-            tailingText: widget.recipientAddress),
+            tailingText: sendCreationModel.message?.reciepient ?? ''),
         ReceiptDetailsTab(
             heading: AppLocalizations.of(context)!.noonPoolFee,
-            tailingText: '-$noonPoolFee ${widget.assetDatum.coinSymbol}'),
-        // const ReceiptDetailsTab( heading: 'Neutron Fee', tailingText: '\$ 0.5'),
+            tailingText:
+                '-${sendCreationModel.message?.fee} ${widget.assetDatum.coinSymbol}'),
         ReceiptDetailsTab(
             heading: AppLocalizations.of(context)!.totalAmount,
             tailingText:
-                '-${widget.amount - noonPoolFee} ${widget.assetDatum.coinSymbol}'),
+                '-${widget.amount - (double.tryParse(sendCreationModel.message?.fee ?? '0.0') ?? 0)} ${widget.assetDatum.coinSymbol}'),
         const SizedBox(
           height: 40,
         ),

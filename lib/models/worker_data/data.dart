@@ -16,6 +16,7 @@ class Data {
   double? sharesInvalid;
   double? sharesStale;
   double? sharesValid;
+  List? hashList;
   List<SubWorker>? subWorkers;
 
   Data({
@@ -30,12 +31,14 @@ class Data {
     this.sharesInvalid,
     this.sharesStale,
     this.sharesValid,
+    this.hashList,
     this.subWorkers,
   });
 
   @override
   String toString() {
-    return 'Data(cumEarnings: $cumEarnings, earningsPaid: $earningsPaid, estEarnings: $estEarnings, hash10min: $hash10min, hash1day: $hash1day, hash1hr: $hash1hr, minersActive: $minersActive, minersAll: $minersAll, sharesInvalid: $sharesInvalid, sharesStale: $sharesStale, sharesValid: $sharesValid, subWorkers: $subWorkers)';
+    return 'Data(cumEarnings: $cumEarnings, earningsPaid: $earningsPaid, estEarnings: $estEarnings, hash10min: $hash10min, hash1day: $hash1day, hash1hr: $hash1hr, minersActive: $minersActive,'
+        ' minersAll: $minersAll, sharesInvalid: $sharesInvalid, sharesStale: $sharesStale, sharesValid: $sharesValid, hashList: $hashList, subWorkers: $subWorkers)';
   }
 
   factory Data.fromMap(Map<String, dynamic> data) => Data(
@@ -50,6 +53,7 @@ class Data {
         sharesInvalid: (data['shares_invalid'] as num?)?.toDouble(),
         sharesStale: (data['shares_stale'] as num?)?.toDouble(),
         sharesValid: (data['shares_valid'] as num?)?.toDouble(),
+        hashList: (data['hash_list'] as List?)?.toList(),
         subWorkers: (data['sub_workers'] as List<dynamic>?)
             ?.map((e) => SubWorker.fromMap(e as Map<String, dynamic>))
             .toList(),
@@ -67,6 +71,7 @@ class Data {
         'shares_invalid': sharesInvalid,
         'shares_stale': sharesStale,
         'shares_valid': sharesValid,
+        'hash_list': hashList,
         'sub_workers': subWorkers?.map((e) => e.toMap()).toList(),
       };
 
@@ -94,6 +99,7 @@ class Data {
     double? sharesInvalid,
     double? sharesStale,
     double? sharesValid,
+    List? hashList,
     List<SubWorker>? subWorkers,
   }) {
     return Data(
@@ -108,6 +114,7 @@ class Data {
       sharesInvalid: sharesInvalid ?? this.sharesInvalid,
       sharesStale: sharesStale ?? this.sharesStale,
       sharesValid: sharesValid ?? this.sharesValid,
+      hashList: hashList ?? this.hashList,
       subWorkers: subWorkers ?? this.subWorkers,
     );
   }
@@ -133,5 +140,6 @@ class Data {
       sharesInvalid.hashCode ^
       sharesStale.hashCode ^
       sharesValid.hashCode ^
+      hashList.hashCode ^
       subWorkers.hashCode;
 }
