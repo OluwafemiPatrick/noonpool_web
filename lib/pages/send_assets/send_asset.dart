@@ -2,12 +2,15 @@
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:noonpool_web/constants/style.dart';
 import 'package:noonpool_web/helpers/network_helper.dart';
 import 'package:noonpool_web/helpers/shared_preference_util.dart';
+import 'package:noonpool_web/main.dart';
 import 'package:noonpool_web/models/wallet_data/datum.dart';
 import 'package:noonpool_web/routing/app_router.gr.dart';
 
 import 'package:noonpool_web/widgets/elevated_button.dart';
+import 'package:noonpool_web/widgets/error_widget.dart';
 import 'receipt_detail_tab.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -29,6 +32,39 @@ class SendAsset extends StatefulWidget {
 
 class _SendAssetState extends State<SendAsset> {
   bool _isLoading = false;
+  bool _isFetchingPrice = true;
+  bool _priceFetchHasError = false;
+  double noonPoolFee = 0;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, getData);
+  }
+
+  getData() async {
+    setState(() {
+      _isFetchingPrice = true;
+      _priceFetchHasError = false;
+    });
+
+    try {
+      //
+      _priceFetchHasError = false;
+    } catch (exception) {
+      MyApp.scaffoldMessengerKey.currentState?.showSnackBar(
+        SnackBar(
+          content: Text(
+            exception.toString(),
+          ),
+        ),
+      );
+      _priceFetchHasError = true;
+    }
+
+    setState(() {
+      _isFetchingPrice = false;
+    });
+  }
 
   void showConfirmationDialog() async {
     if (_isLoading) {
@@ -113,7 +149,7 @@ class _SendAssetState extends State<SendAsset> {
   showMessage(String message) async {
     return showDialog(
       context: context,
-         useRootNavigator: false,
+      useRootNavigator: false,
       barrierDismissible: false, // user must tap button for close dialog!
       builder: (BuildContext context) {
         return AlertDialog(
@@ -132,12 +168,37 @@ class _SendAssetState extends State<SendAsset> {
     );
   }
 
+  buildProgressBar() {
+    return const Center(
+      child: SizedBox(
+        height: 50,
+        width: 50,
+        child: CircularProgressIndicator.adaptive(
+          backgroundColor: kLightBackgroud,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final bodyText1 = textTheme.bodyText1!;
     final bodyText2 = textTheme.bodyText2!;
 
+    return _isFetchingPrice
+        ? buildProgressBar()
+        : _priceFetchHasError
+            ? CustomErrorWidget(
+                error: AppLocalizations.of(context)!
+                    .anErrorOccurredWithTheDataFetchPleaseTryAgain,
+                onRefresh: () {
+                  getData();
+                })
+            : buildBody(bodyText1, bodyText2);
+  }
+
+  Column buildBody(TextStyle bodyText1, TextStyle bodyText2) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -176,8 +237,13 @@ class _SendAssetState extends State<SendAsset> {
             heading: AppLocalizations.of(context)!.to,
             tailingText: widget.recipientAddress),
         ReceiptDetailsTab(
-            heading: AppLocalizations.of(context)!.maxTotal,
-            tailingText: '-${widget.amount} ${widget.assetDatum.coinSymbol}'),
+            heading: AppLocalizations.of(context)!.noonPoolFee,
+            tailingText: '-$noonPoolFee ${widget.assetDatum.coinSymbol}'),
+        // const ReceiptDetailsTab( heading: 'Neutron Fee', tailingText: '\$ 0.5'),
+        ReceiptDetailsTab(
+            heading: AppLocalizations.of(context)!.totalAmount,
+            tailingText:
+                '-${widget.amount - noonPoolFee} ${widget.assetDatum.coinSymbol}'),
         const SizedBox(
           height: 40,
         ),

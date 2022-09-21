@@ -21,9 +21,16 @@ class AppPreferences {
   static const _idKey = 'id';
   static const _emailKey = 'email';
   static const _currentLoginKey = 'currentLogin';
-
+  static const _currentPoolItemKey = 'currentPoolItem';
   static Future setOnBoardingStatus({required bool status}) async {
     await _preference?.setBool(_onBoardingKey, status);
+  }
+
+  static Future setCurrrentPoolItem({required String poolName}) async {
+    await _preference?.setString(
+      _currentPoolItemKey,
+      poolName,
+    );
   }
 
   static Future set2faSecurityStatus({required bool isEnabled}) async {
@@ -73,7 +80,8 @@ class AppPreferences {
       _preference?.getBool(_onBoardingKey) ?? false;
   static bool get get2faSecurityEnabled =>
       _preference?.getBool(_2faSecurityEnabled) ?? false;
-
+  static String get currentPoolItem =>
+      _preference?.getString(_currentPoolItemKey) ?? 'LTC-DOGE';
   static bool get loginStatus => _preference?.getBool(_loginInKey) ?? false;
   static String get userId => _preference?.getString(_idKey) ?? '';
   static String get currentLoginKey =>

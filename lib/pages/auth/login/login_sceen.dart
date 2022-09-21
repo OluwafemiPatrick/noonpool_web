@@ -283,7 +283,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: kDefaultMargin / 2,
                 ),
-                buildRegisterButton(bodyText2)
+                buildRegisterButton(bodyText2),
               ],
             ),
           )),

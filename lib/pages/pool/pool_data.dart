@@ -31,7 +31,12 @@ class _PoolPageState extends State<PoolPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, getUserData);
+    Future.delayed(Duration.zero, () {
+      getUserData();
+      setState(() {
+        coin = AppPreferences.currentPoolItem;
+      });
+    });
   }
 
   final StreamController<int> _poolStatisticsStream = StreamController();
@@ -279,6 +284,7 @@ class _PoolPageState extends State<PoolPage> {
             setState(() {
               workerData = WorkerData();
               coin = selected!;
+              AppPreferences.setCurrrentPoolItem(poolName: selected!);
               port1 = '3050';
               port2 = '3060';
               miningAdd = 'litecoin.noonpool.com:3050';
@@ -290,6 +296,7 @@ class _PoolPageState extends State<PoolPage> {
             setState(() {
               workerData = WorkerData();
               coin = selected!;
+              AppPreferences.setCurrrentPoolItem(poolName: selected!);
               port1 = '3055';
               port2 = '0';
               //miningAdd = AppLocalizations.of(context)!.coinNotAvailable;
@@ -303,6 +310,7 @@ class _PoolPageState extends State<PoolPage> {
             setState(() {
               workerData = WorkerData();
               coin = selected!;
+              AppPreferences.setCurrrentPoolItem(poolName: selected!);
               port1 = '3030';
               port2 = '3040';
               miningAdd = 'bitcoincash.noonpool.com:3030';

@@ -153,7 +153,7 @@ Future<void> verifyUserOTP({
       }),
       headers: {'Content-Type': 'application/json'},
     );
- 
+
     if (response.statusCode == 200) {
       return;
     } else {
@@ -176,7 +176,7 @@ Future<bool> checkUsername(String username) async {
       Uri.parse('${baseUrl}auth/checkUsername?username=$username'),
       headers: {'Content-Type': 'application/json'},
     );
- 
+
     if (response.statusCode == 200) {
       return true;
     }
@@ -239,7 +239,7 @@ Future<LoginDetails> signInToUserAccount({
       }),
       headers: {'Content-Type': 'application/json'},
     );
- 
+
     if (response.statusCode == 200) {
       return LoginDetails.fromJson(response.body);
     } else {
@@ -270,7 +270,6 @@ Future<void> resetPassword({
       },
     );
 
- 
     if (response.statusCode == 200) {
       return;
     } else {
@@ -295,7 +294,7 @@ Future<WalletData> getWalletData() async {
       Uri.parse("${baseUrl}wallet/wallet_list?user_id=$userId"),
       headers: {'Content-Type': 'application/json'},
     );
- 
+
     if (response.statusCode == 200) {
       return WalletData.fromJson(response.body);
     } else {
@@ -319,7 +318,6 @@ Future<void> getWalletInformation(WalletDatum walletDatum) async {
           "${baseUrl}wallet?id=$userId&network=${walletDatum.coinSymbol}"),
       headers: {'Content-Type': 'application/json'},
     );
- 
 
     if (response.statusCode == 200) {
       return;
@@ -348,11 +346,10 @@ Future<WalletTransactions> getSummaryTransactions({
           "${baseUrl}wallet/getTransactionList?id=$userId&coin=$coin&last_trx_id=$lastHash&page=$page"),
       headers: {'Content-Type': 'application/json'},
     );
- 
+
     final decode = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
- 
       return WalletTransactions.fromMap(decode);
     } else {
       return Future.error(decode['message'] ?? '');
@@ -361,7 +358,6 @@ Future<WalletTransactions> getSummaryTransactions({
     return Future.error(
         'There is either no or a very weak network connection.');
   } catch (exception) {
- 
     return Future.error('An error occurred while getting data');
   }
 }
@@ -372,10 +368,11 @@ sendFromWallet({
   required double amount,
 }) async {
   final userId = AppPreferences.userId;
+  final newReceiver = reciever.replaceAll("bitcoincash:", "").trim();
   try {
     final body = <String, dynamic>{
       "user_id": userId,
-      "reciepient": reciever,
+      "reciepient": newReceiver,
       "amount": amount,
       "network": network,
     };
@@ -385,7 +382,7 @@ sendFromWallet({
       body: jsonEncode(body),
       headers: {'Content-Type': 'application/json'},
     );
- 
+
     final decode = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
@@ -397,7 +394,7 @@ sendFromWallet({
     return Future.error(
         'There is either no or a very weak network connection.');
   } catch (exception) {
-    return Future.error('An error occurred while getting data');
+    return Future.error('An error occurred while processing your request');
   }
 }
 
@@ -413,7 +410,7 @@ Future<RecieveData> walletData({
         'Content-Type': 'application/json',
       },
     );
- 
+
     final decode = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
@@ -425,7 +422,6 @@ Future<RecieveData> walletData({
     return Future.error(
         'There is either no or a very weak network connection.');
   } catch (exception) {
-  
-  return Future.error('An error occurred while getting data');
+    return Future.error('An error occurred while getting data');
   }
 }
