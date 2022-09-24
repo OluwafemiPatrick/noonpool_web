@@ -266,7 +266,7 @@ class _PoolPageState extends State<PoolPage> {
   Container buildHashrateChart(TextStyle bodyText2, SizedBox spacer) {
     return Container(
         width: double.infinity,
-        height: 320.0,
+        height: 400.0,
         padding: const EdgeInsets.only(
             left: 5.0, bottom: 5.0, right: 10.0, top: 10.0),
         margin: const EdgeInsets.only(
