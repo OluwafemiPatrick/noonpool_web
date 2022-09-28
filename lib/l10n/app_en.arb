@@ -182,8 +182,14 @@
 "requestProcessing":"Request Processing",
 "pleaseBePatientWhileWeProcessYourRequest":"Please be patient while we process your request.",
 "errorOnCopyIngUrl":"An error occurred while opening your browser, please paste the copied url in your browser",
-"transactionUrlHasBeenCopied":"Transaction url has been copied to your clipboard"
+"transactionUrlHasBeenCopied":"Transaction url has been copied to your clipboard",
  
 
+"pleaseAcceptTAndC": "Please accept the application terms and privacy policy to proceed",
+ "iAgreeeToThe":"I agree to the",
+ "terms": "Terms",
+ "and":"and",
+ "privacyPolicy" : "Privacy Policy",
+ "ofUse":"of use"
 
 }

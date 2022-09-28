@@ -38,28 +38,22 @@ class MyApp extends StatelessWidget {
           ),
     );
 
-    return GetX<LocaleController>(builder: (controller) {
-      final locale = controller.locale.value;
-      return GetMaterialApp.router(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: locale.languageCode == AppPreferences.defaultLocaleLanguageCode
-            ? null
-            : locale,
-        localeResolutionCallback: (locale, supportedLocales) {
-          if (supportedLocales.contains(locale)) {
-            return locale;
-          }
-          // default language
-          return const Locale('en');
-        },
-        title: appName,
-        debugShowCheckedModeBanner: false,
-        theme: lightTheme,
-        scaffoldMessengerKey: scaffoldMessengerKey,
-        routerDelegate: _appRouter.delegate(),
-        routeInformationParser: _appRouter.defaultRouteParser(),
-      );
-    });
+    return GetMaterialApp.router(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localeResolutionCallback: (locale, supportedLocales) {
+        if (supportedLocales.contains(locale)) {
+          return locale;
+        }
+        // default language
+        return const Locale('en');
+      },
+      title: appName,
+      debugShowCheckedModeBanner: false,
+      theme: lightTheme,
+      scaffoldMessengerKey: scaffoldMessengerKey,
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
+    );
   }
 }

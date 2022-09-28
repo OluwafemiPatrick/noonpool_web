@@ -15,6 +15,7 @@ import 'package:noonpool_web/widgets/outlined_button.dart';
 import 'package:noonpool_web/widgets/svg_image.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AppBarLarge extends StatefulWidget {
   const AppBarLarge({Key? key}) : super(key: key);
@@ -489,13 +490,13 @@ class AppBarHelper {
       DropDownWidget(
           items: [
             AppLocalizations.of(context)!.helpCenter,
-            // AppLocalizations.of(context)!.language,
+            "${AppLocalizations.of(context)!.terms} ${AppLocalizations.of(context)!.ofUse}",
+            AppLocalizations.of(context)!.privacyPolicy,
           ],
           selectedPosition: -1,
           onUpdate: (index) async {
-            if (index == 1) {
-              // context.router.push(const LanguageChanger());
-            } else if (index == 0) {
+            // context.router.push(const LanguageChanger());
+            if (index == 0) {
               final url = _emailLaunchFunction();
               final canLaunch = await canLaunchUrl(url);
               if (canLaunch) {
@@ -506,6 +507,10 @@ class AppBarHelper {
                         content: Text(
                             'Kindly send a mail to  $supportEmailAddress ')));
               }
+            } else if (index == 1) {
+              onLinkClicked('https://noonpool.com/terms-of-service/');
+            } else if (index == 2) {
+              onLinkClicked('https://noonpool.com/privacy-policy/');
             }
           },
           parent: const Icon(
@@ -517,6 +522,12 @@ class AppBarHelper {
               style: bodyText2,
             );
           });
+
+  onLinkClicked(String url) async {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    }
+  }
 
   void update2faSecurity(BuildContext context) async {
     final newValue = !AppPreferences.get2faSecurityEnabled;
@@ -616,7 +627,7 @@ class AppBarHelper {
 
     showGeneralDialog(
       context: context,
-         useRootNavigator: false,
+      useRootNavigator: false,
       barrierLabel: "Request Processing",
       barrierDismissible: false,
       barrierColor: Colors.black.withOpacity(0.5),
@@ -635,7 +646,7 @@ class AppBarHelper {
     final bodyText2 = textTheme.bodyText2!.copyWith(fontSize: 16);
     showDialog(
         context: context,
-           useRootNavigator: false,
+        useRootNavigator: false,
         builder: (ctx) {
           return AlertDialog(
             shape: const RoundedRectangleBorder(
