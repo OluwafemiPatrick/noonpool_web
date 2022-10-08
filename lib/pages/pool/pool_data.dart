@@ -33,10 +33,10 @@ class _PoolPageState extends State<PoolPage> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      getUserData();
       setState(() {
         coin = AppPreferences.currentPoolItem;
       });
+      getUserData();
     });
   }
 
@@ -266,7 +266,7 @@ class _PoolPageState extends State<PoolPage> {
   Container buildHashrateChart(TextStyle bodyText2, SizedBox spacer) {
     return Container(
         width: double.infinity,
-        height: 400.0,
+        height: 420.0,
         padding: const EdgeInsets.only(
             left: 5.0, bottom: 5.0, right: 10.0, top: 10.0),
         margin: const EdgeInsets.only(
@@ -321,12 +321,10 @@ class _PoolPageState extends State<PoolPage> {
               workerData = WorkerData();
               coin = selected!;
               AppPreferences.setCurrrentPoolItem(poolName: selected!);
-              port1 = '3055';
+              port1 = '0';
               port2 = '0';
-              //miningAdd = AppLocalizations.of(context)!.coinNotAvailable;
-              //stratumUrl = AppLocalizations.of(context)!.coinNotAvailable;
-              miningAdd = 'litecoin.noonpool.com:3055';
-              stratumUrl = 'stratum+tcp://litecoin.noonpool.com:3055';
+              miningAdd = AppLocalizations.of(context)!.coinNotAvailable;
+              stratumUrl = AppLocalizations.of(context)!.coinNotAvailable;
             });
             getUserData();
           }
@@ -479,8 +477,7 @@ class _PoolPageState extends State<PoolPage> {
   }
 
   Container buildPoolData(TextStyle bodyText2, SizedBox spacer) {
-    final style1 =
-        bodyText2.copyWith(fontSize: 15, fontWeight: FontWeight.w500);
+    final style1 = bodyText2.copyWith(fontSize: 15, fontWeight: FontWeight.w500);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
@@ -768,7 +765,7 @@ class _PoolPageState extends State<PoolPage> {
       minX: 0,
       maxX: 48,
       minY: 0,
-      maxY: 10,
+      maxY: 11,
       lineBarsData: [
         LineChartBarData(
           spots: getHashList() ?? [],
