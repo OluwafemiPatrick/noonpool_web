@@ -240,15 +240,15 @@ class _SendAssetState extends State<SendAsset> {
                 "${widget.assetDatum.coinName} (${widget.assetDatum.coinSymbol})"),
         ReceiptDetailsTab(
             heading: AppLocalizations.of(context)!.to,
-            tailingText: sendCreationModel.message?.reciepient ?? ''),
+            tailingText: sendCreationModel.reciepient ?? ''),
         ReceiptDetailsTab(
             heading: AppLocalizations.of(context)!.noonPoolFee,
             tailingText:
-                '-${sendCreationModel.message?.fee} ${widget.assetDatum.coinSymbol}'),
+                '-${sendCreationModel.fee} ${widget.assetDatum.coinSymbol}'),
         ReceiptDetailsTab(
             heading: AppLocalizations.of(context)!.totalAmount,
             tailingText:
-                '-${widget.amount - (double.tryParse(sendCreationModel.message?.fee ?? '0.0') ?? 0)} ${widget.assetDatum.coinSymbol}'),
+                '-${widget.amount - (double.tryParse(sendCreationModel.fee ?? '0.0') ?? 0)} ${widget.assetDatum.coinSymbol}'),
         const SizedBox(
           height: 40,
         ),
