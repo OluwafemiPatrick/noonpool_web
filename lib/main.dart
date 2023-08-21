@@ -1,3 +1,9 @@
+///
+/// Written & Developed by Oluwafemi Patrick
+/// Copyright @ Jan 2022
+/// oopatrickk@gmail.com
+///
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:noonpool_web/constants/strings.dart';
@@ -25,16 +31,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lightTheme = ThemeData(
-      colorScheme: ColorScheme.fromSwatch().copyWith(
-        primary: kPrimaryColor,
-      ),
+      colorScheme: ColorScheme.fromSwatch().copyWith(primary: kPrimaryColor,),
       canvasColor: kBackgroundColor,
       fontFamily: manrope,
       iconTheme: ThemeData.light().iconTheme.copyWith(color: kTextColor),
       textTheme: ThemeData.light().textTheme.copyWith(
-            bodyText1: const TextStyle(
-                fontSize: 15, color: kTextColor, fontWeight: FontWeight.w500),
-            bodyText2: const TextStyle(fontSize: 13, color: kTextColor),
+            bodyLarge: const TextStyle(fontSize: 15, color: kTextColor, fontWeight: FontWeight.w500),
+            bodyMedium: const TextStyle(fontSize: 13, color: kTextColor),
           ),
     );
 

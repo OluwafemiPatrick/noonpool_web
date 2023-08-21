@@ -50,7 +50,7 @@ class _AppBarLargeState extends State<AppBarLarge> with AppBarHelper {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final bodyText1 = textTheme.bodyText2!;
+    final bodyText1 = textTheme.bodyMedium!;
     return GetX<AppBarController>(builder: (controller) {
       return Row(
         children: [
@@ -176,7 +176,7 @@ class _AppBarSmallState extends State<AppBarSmall> with AppBarHelper {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final bodyText1 = textTheme.bodyText2!;
+    final bodyText1 = textTheme.bodyMedium!;
     return GetX<AppBarController>(builder: (controller) {
       return Row(
         children: [
@@ -355,7 +355,7 @@ class AppDrawer extends StatelessWidget with AppBarHelper {
       );
 }
 
-class AppBarHelper {
+mixin class AppBarHelper {
   void updateScreen() {}
 
   updateListener(BuildContext context) {

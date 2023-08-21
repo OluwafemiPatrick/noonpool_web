@@ -62,8 +62,8 @@ class _OtpPageState extends State<OtpPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final bodyText2 = textTheme.bodyText2;
-    final bodyText1 = textTheme.bodyText1;
+    final bodyText2 = textTheme.bodyMedium;
+    final bodyText1 = textTheme.bodyLarge;
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
       child: Column(
@@ -197,7 +197,7 @@ class _OtpPageState extends State<OtpPage> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: QrImage(
+        child: QrImageView(
           data: otpUrl,
           version: QrVersions.auto,
           size: 250,

@@ -53,8 +53,8 @@ class _ReceiveAssetsState extends State<ReceiveAssets> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final bodyText2 = textTheme.bodyText2;
-    final bodyText1 = textTheme.bodyText1;
+    final bodyText2 = textTheme.bodyMedium;
+    final bodyText1 = textTheme.bodyLarge;
     return _isLoading
         ? buildProgressBar()
         : _hasError
@@ -159,7 +159,7 @@ class _ReceiveAssetsState extends State<ReceiveAssets> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            QrImage(
+            QrImageView(
               data: recieveData.coinInfo?.address ?? '',
               version: QrVersions.auto,
               size: 250,
@@ -194,7 +194,7 @@ class RoundedIconWithTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final bodyText2 = textTheme.bodyText2;
+    final bodyText2 = textTheme.bodyMedium;
 
     return InkWell(
       onTap: onPressed,
